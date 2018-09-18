@@ -47,7 +47,7 @@ def steamid_to_steamid64(steamid):
     steamid64 = BASE_STEAM_ID + int(y_part) * 2
     if x_part == '1':
         steamid64 += 1
-    return steamid64
+    return str(steamid64)
 
 
 def steamid64_to_steamid3(steamid):
@@ -68,12 +68,14 @@ def steamid3_to_steamid(steamid):
     return 'STEAM_0:{}:{}'.format(x_part, y_part)
 
 
-class SteamProfile:
+class SteamID:
     def __init__(self, steamid):
         """
         steamid can be in form [STEAM_0:X:Y], [76561197960265728] or [[U:1:A]]
         """
         _steamid, _steamid64, _steamid3 = None, None, None
+
+        steamid = str(steamid)
 
         if is_steamid(steamid):
             _steamid = steamid
@@ -84,7 +86,7 @@ class SteamProfile:
             _steamid64 = steamid
             _steamid3 = steamid64_to_steamid3(_steamid64)
         elif is_steamid3(steamid):
-            _steamid = steamid3_to_steamid
+            _steamid = steamid3_to_steamid(steamid)
             _steamid64 = steamid_to_steamid64(_steamid)
             _steamid3 = steamid
 
@@ -93,4 +95,4 @@ class SteamProfile:
         self.steamid3 = _steamid3
 
     def __repr__(self):
-        return '<SteamProfile [{}]>'.format(self.steamid)
+        return '<SteamID [{}]>'.format(self.steamid)
