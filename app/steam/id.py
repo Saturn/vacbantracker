@@ -11,13 +11,6 @@ steamid_regexes = {
     }
 
 
-def is_valid_steamid(steamid):
-    """
-    Checks if steamid is valid
-    """
-    return any(re.match(x, steamid) for x in steamid_regexes.values())
-
-
 def is_steamid(steamid):
     return re.match(steamid_regexes['steamid'], steamid) is not None
 
@@ -28,6 +21,15 @@ def is_steamid64(steamid):
 
 def is_steamid3(steamid):
     return re.match(steamid_regexes['steamid3'], steamid) is not None
+
+
+def is_valid_steamid(steamid):
+    """
+    Checks if steamid is valid
+    """
+    return any([is_steamid(steamid),
+                is_steamid64(steamid),
+                is_steamid3(steamid)])
 
 
 def steamid64_to_steamid(steamid):
