@@ -37,7 +37,8 @@ def steamid64_to_steamid(steamid):
     convert steamid in form [76561197960265728] to [STEAM_0:X:Y]
     """
     new_steamid = int(steamid) - BASE_STEAM_ID
-    return 'STEAM_0:{}:{}'.format(new_steamid % 2, steamid // 2)
+    y_part, x_part = divmod(new_steamid, 2)
+    return 'STEAM_0:{}:{}'.format(x_part, y_part)
 
 
 def steamid_to_steamid64(steamid):
