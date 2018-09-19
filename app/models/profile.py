@@ -5,8 +5,7 @@ from app.utils import unix_ts_to_dt
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     steamid = db.Column(db.String(255), nullable=False)
-    community_visibility_state = db.Column(db.Enum(list(range(1, 6))),
-                                           nullable=False)
+    communityvisibilitystate = db.Column(db.Integer, nullable=False)
     profilestate = db.Column(db.Integer, nullable=False)
     personaname = db.Column(db.String(255))
     lastlogoff = db.Column(db.DateTime, default=lambda x: unix_ts_to_dt(x))
@@ -14,7 +13,7 @@ class Profile(db.Model):
     avatar = db.Column(db.String(255))
     avatarmedium = db.Column(db.String(255))
     avatarfull = db.Column(db.String(255))
-    personastate = db.Column(db.Enum(list(range(7))))
+    personastate = db.Column(db.Integer, nullable=False)
 
     # optional
     commentpermission = db.Column(db.Integer)
