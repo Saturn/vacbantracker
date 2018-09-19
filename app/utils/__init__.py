@@ -12,3 +12,10 @@ def get_pacific_tz_year():
     Return the current year from Pacific Timezone
     """
     return pytz.datetime.datetime.now(tz=pytz.timezone('US/Pacific')).year
+
+
+def unix_ts_to_dt(unix_timestamp):
+    """
+    Convert unix timestamp to datetime object
+    """
+    return pytz.datetime.datetime.fromtimestamp(unix_timestamp)
