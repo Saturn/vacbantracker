@@ -3,8 +3,8 @@ from flask import Flask
 from app.config import config
 from app.extensions import db, login_manager
 
-from app.blueprints.main.views import main
-from app.blueprints.auth.views import auth
+from app.views.main.views import main
+from app.views.auth.views import auth
 
 
 def register_blueprints(app):
