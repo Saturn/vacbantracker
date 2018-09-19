@@ -13,3 +13,9 @@ def make_shell_context():
                 db=db,
                 User=User,
                 Profile=Profile)
+
+
+@app.cli.command('initdb', help='Recreate db')
+def initdb():
+    db.drop_all()
+    db.create_all()
