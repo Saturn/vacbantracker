@@ -15,7 +15,6 @@ player_bans = steam_api_url + 'ISteamUser/GetPlayerBans/v1'
 aliases_url = 'https://steamcommunity.com/profiles/{steamid}/ajaxaliases'
 
 
-
 def stringify_steamids(list_of_steamids):
     """
     Args:
