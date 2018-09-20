@@ -2,6 +2,7 @@ from app import create_app, db
 
 from app.models.user import User
 from app.models.profile import Profile
+from app.steam.api import get_summaries, get_bans
 
 
 app = create_app('default')
@@ -12,7 +13,9 @@ def make_shell_context():
     return dict(app=app,
                 db=db,
                 User=User,
-                Profile=Profile)
+                Profile=Profile,
+                get_summaries=get_summaries,
+                get_bans=get_bans)
 
 
 @app.cli.command('initdb', help='Recreate db')
