@@ -3,7 +3,7 @@ from app.extensions import db
 
 class SteamOID(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
 
     profile = db.relationship('Profile', uselist=False)

@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from flask_login import UserMixin
+
 from app.extensions import db, bcrypt
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255))
     _password = db.Column(db.String(255))
