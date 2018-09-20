@@ -4,7 +4,7 @@ import pytz
 def convert_pacific_to_utc(the_date):
     pacific_tz = pytz.timezone('US/Pacific')
     local = pacific_tz.localize(the_date)
-    return local.astimezone(pytz.utc)
+    return local.astimezone(pytz.utc).replace(tzinfo=None)
 
 
 def get_pacific_tz_year():
