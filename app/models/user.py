@@ -10,6 +10,8 @@ class User(db.Model):
     timecreated = db.Column(db.DateTime, default=datetime.utcnow())
     verified = db.Column(db.Boolean, default=False)
 
+    steam_oid = db.relationship('SteamOID', uselist=False)
+
     @property
     def password(self):
         return self._password
@@ -20,3 +22,6 @@ class User(db.Model):
 
     def verify_pw(self, password):
         return bcrypt.check_password_hash(self.password, password)
+
+    def __repr__(self):
+        return '<User {}>'.format(self.id)
