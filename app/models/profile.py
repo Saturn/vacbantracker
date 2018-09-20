@@ -35,6 +35,8 @@ class Profile(db.Model):
     num_vac_bans = db.Column(db.Integer)
     vac_banned = db.Column(db.Boolean)
 
+    tracking = db.relationship('Tracking', backref='profile', lazy='dynamic')
+
     # mapping of steam api key names to the Profile col names
     col_name_translation = {'CommunityBanned': 'community_banned',
                             'DaysSinceLastBan': 'days_since_last_ban',
