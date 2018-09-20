@@ -22,7 +22,7 @@ def stringify_steamids(list_of_steamids):
     Returns:
         Single string with steamids separated by comma
     """
-    return ','.join(list(map(str, list_of_steamids)))[:-1]
+    return ','.join(list(map(str, list_of_steamids)))
 
 
 def get_summaries(steamids):
