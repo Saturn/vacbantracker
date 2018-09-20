@@ -27,7 +27,27 @@ class Profile(db.Model):
     gameextrainfo = db.Column(db.String(255))
     gameserverip = db.Column(db.String(255))
 
+    # ban info
+    community_banned = db.Column(db.Boolean)
+    days_since_last_ban = db.Column(db.Integer)
+    economy_ban = db.Column(db.String(255))
+    num_game_bans = db.Column(db.Integer)
+    num_vac_bans = db.Column(db.Integer)
+    vac_banned = db.Column(db.Boolean)
+
+    # mapping of steam api key names to the Profile col names
+    col_name_translation = {'CommunityBanned': 'community_banned',
+                            'DaysSinceLastBan': 'days_since_last_ban',
+                            'EconomyBan': 'economy_ban',
+                            'NumberOfGameBans': 'num_game_bans',
+                            'NumberOfVACBans': 'num_vac_bans',
+                            'VACBanned': 'vac_banned'}
+
     def __init__(self, **kwargs):
+        translations = Profile.col_name_translation
+        for key in translations:
+            if key in kwargs:
+                kwargs[translations[key]] = kwargs.pop(key)
         self.__dict__.update(kwargs)
 
     def __repr__(self):
