@@ -8,7 +8,7 @@ class Profile(db.Model):
     communityvisibilitystate = db.Column(db.Integer, nullable=False)
     profilestate = db.Column(db.Integer, nullable=False)
     personaname = db.Column(db.String(255))
-    lastlogoff = db.Column(db.DateTime, default=lambda x: unix_ts_to_dt(x))
+    lastlogoff = db.Column(db.DateTime)
     profileurl = db.Column(db.String(255))
     avatar = db.Column(db.String(255))
     avatarmedium = db.Column(db.String(255))
@@ -19,7 +19,7 @@ class Profile(db.Model):
     commentpermission = db.Column(db.Integer)
     realname = db.Column(db.String(255))
     primaryclanid = db.Column(db.String(255))
-    timecreated = db.Column(db.DateTime, default=lambda x: unix_ts_to_dt(x))
+    timecreated = db.Column(db.DateTime)
     loccountrycode = db.Column(db.String(255))
     locstatecode = db.Column(db.String(255))
     loccityid = db.Column(db.Integer)
@@ -46,10 +46,17 @@ class Profile(db.Model):
                             'VACBanned': 'vac_banned'}
 
     def __init__(self, **kwargs):
+        """
+        Make api data match column names on profile table
+        and convert unix timestamps to datetime objects
+        """
         translations = Profile.col_name_translation
         for key in translations:
             if key in kwargs:
                 kwargs[translations[key]] = kwargs.pop(key)
+        kwargs['lastlogoff'] = unix_ts_to_dt(kwargs['lastlogoff'])
+        if 'timecreated' in kwargs:
+            kwargs['timecreated'] = unix_ts_to_dt(kwargs['timecreated'])
         self.__dict__.update(kwargs)
 
     def __repr__(self):
