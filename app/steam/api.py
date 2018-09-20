@@ -3,7 +3,7 @@ from datetime import datetime
 
 from requests import get
 
-from app.steam.id import SteamProfile
+from app.steam.id import SteamID
 from app.utils import convert_pacific_to_utc, get_pacific_tz_year
 
 

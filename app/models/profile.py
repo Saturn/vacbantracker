@@ -28,4 +28,4 @@ class Profile(db.Model):
     gameserverip = db.Column(db.String(255))
 
     def __repr__(self):
-        return '<Profile steamid={}'.format(self.steamid)
+        return '<Profile steamid={}>'.format(self.steamid)
