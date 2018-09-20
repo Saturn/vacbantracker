@@ -55,6 +55,27 @@ def get_bans(steamids):
         return bans.json()['players']
 
 
+def get_summaries_and_bans(steamids):
+    """
+    Args:
+        steamids: list of steamids
+    Returns:
+        List of player summary and ban info
+    """
+    summaries = get_summaries(steamids)
+    old_bans = get_bans(steamids)
+    bans = []
+    for profile in old_bans:
+        profile['steamid'] = profile.pop('SteamId')
+        bans.append(profile)
+    merged = []
+    for summary in summaries:
+        for ban in bans:
+            if summary['steamid'] == ban['steamid']:
+                merged.append({**summary, **ban})
+    return merged
+
+
 def get_aliases(steamid):
     """
     Args:
