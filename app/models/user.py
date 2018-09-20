@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_login import UserMixin
 
 from app.extensions import db, bcrypt
+from app.models.steam_oid import SteamOID
 
 
 class User(db.Model, UserMixin):
@@ -26,4 +27,17 @@ class User(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.password, password)
 
     def __repr__(self):
-        return '<User {}>'.format(self.id)
+        output = '<User [Normal] {}>'.format(self.id)
+        if self.steam_oid:
+            output = '<User [Steam] steamid={}>'.format(self.steam_oid.profile.steamid)
+        return output
+
+    @staticmethod
+    def get_steam_user(steamid):
+        """
+        Args:
+            steamid Steamid of users
+        Returns:
+            User who has linked SteamOID profile with steamid
+        """
+        return User.query.join(SteamOID).filter(SteamOID.profile.has(steamid=steamid)).first()
