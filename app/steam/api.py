@@ -74,6 +74,13 @@ def get_summaries_and_bans(steamids):
             if summary['steamid'] == ban['steamid']:
                 merged.append({**summary, **ban})
     return merged
+    # faster version?
+    # from operator import itemgetter
+    # sort_key = operator.itemgetter("steamid")
+    # merged = []
+    # for summary, ban in zip(sorted(summaries, key=sort_key), sorted(bans, key=sort_key)):
+    #     merged.append({**summary, **ban})
+    # return merged
 
 
 def get_aliases(steamid):
