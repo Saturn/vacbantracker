@@ -28,9 +28,7 @@ class Profile(db.Model):
     gameserverip = db.Column(db.String(255))
 
     def __init__(self, **kwargs):
-        if 'personastateflags' in kwargs:
-            del(kwargs['personastateflags'])
-        super(Profile, self).__init__(**kwargs)
+        self.__dict__.update(kwargs)
 
     def __repr__(self):
         return '<Profile steamid={}>'.format(self.steamid)
