@@ -52,7 +52,11 @@ def get_bans(steamids):
                params=dict(key=steam_api_key,
                            steamids=steamids))
     if bans.status_code == 200:
-        return bans.json()['players']
+        # rename SteamId key to steamid
+        data = bans.json()['players']
+        for profile in data:
+            profile['steamid'] = profile.pop('SteamId')
+        return data
 
 
 def get_summaries_and_bans(steamids):
@@ -63,11 +67,7 @@ def get_summaries_and_bans(steamids):
         List of player summary and ban info
     """
     summaries = get_summaries(steamids)
-    old_bans = get_bans(steamids)
-    bans = []
-    for profile in old_bans:
-        profile['steamid'] = profile.pop('SteamId')
-        bans.append(profile)
+    bans = get_bans(steamids)
     merged = []
     for summary in summaries:
         for ban in bans:
