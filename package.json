@@ -1,0 +1,16 @@
+{
+  "name": "vacbantracker",
+  "version": "1.0.0",
+  "description": "An application for tracking ban status of Steam Profiles.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saturn/vacbantracker.git"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.3"
+  }
+}
