@@ -23,6 +23,7 @@ class User(db.Model, UserMixin):
     verified = db.Column(db.Boolean, default=False)
 
     steam_oid = db.relationship('SteamOID', uselist=False)
+    tracking = db.relationship('Tracking', lazy='dynamic', backref='user')
 
     @property
     def password(self):

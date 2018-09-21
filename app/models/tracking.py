@@ -22,7 +22,6 @@ class Tracking(db.Model):
     x_vac_banned = db.Column(db.Boolean)
 
     profile = db.relationship('Profile', uselist=False)
-    user = db.relationship('User', uselist=False)
 
     def __repr__(self):
         return '<Tracking steamid={} user={}>'.format(self.profile.steamid,
