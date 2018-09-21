@@ -2,7 +2,7 @@ import re
 
 from flask import Blueprint, redirect, url_for
 
-from flask_login import current_user, logout_user, login_user, login_required
+from flask_login import current_user, logout_user, login_user
 
 from app.extensions import openid
 from app.models.user import User
@@ -22,7 +22,6 @@ def register():
 
 
 @auth.route('/logout')
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
