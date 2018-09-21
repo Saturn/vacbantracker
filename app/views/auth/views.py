@@ -27,7 +27,7 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@auth.route('/login_with_steam')
+@auth.route('/login/steam')
 @openid.loginhandler
 def login_with_steam():
     if current_user.is_authenticated:
