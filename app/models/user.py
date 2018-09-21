@@ -1,9 +1,15 @@
 from datetime import datetime
 
+from flask import current_app
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from app.extensions import db, bcrypt
 from app.models.steam_oid import SteamOID
+
+
+def get_serializer(expiration=None):
+    return Serializer(current_app.config['SECRET_KEY'], expiration)
 
 
 class User(db.Model, UserMixin):
@@ -40,4 +46,17 @@ class User(db.Model, UserMixin):
         Returns:
             User who has linked SteamOID profile with steamid
         """
-        return User.query.join(SteamOID).filter(SteamOID.profile.has(steamid=steamid)).first()
+        return User.query.join(SteamOID)\
+                         .filter(SteamOID.profile.has(steamid=steamid)).first()
+
+    def generate_email_verification_token(self, email=None, expiration=24*60*60):
+        """
+        Args:
+            email: The user's email they wish to verify. If none then
+            user the email that is linked to user
+        Returns:
+            Signed token [valid for 24 hours]
+        """
+        email = self.email if email is None else email
+        return get_serializer(expiration).dumps({'user_id': self.id,
+                                                 'email': email})
