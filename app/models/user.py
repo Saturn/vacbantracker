@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import current_app
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import SignatureExpired, BadSignature
 
 from app.extensions import db, bcrypt
 from app.models.steam_oid import SteamOID
@@ -58,5 +59,37 @@ class User(db.Model, UserMixin):
             Signed token [valid for 24 hours]
         """
         email = self.email if email is None else email
+        if not email:
+            raise ValueError('Must specify email')
         return get_serializer(expiration).dumps({'user_id': self.id,
                                                  'email': email})
+
+    @staticmethod
+    def validate_email(token):
+        """
+        Args:
+            token: The token which contains an email address
+        Returns:
+            String indicating whether or not email has been verified.
+                'verified' - email has been verified
+                'unverified' - not been verified for unknown reason
+                'bad_signature' - token had bad signature
+                'signature_expired' - token's signature had expired (>24 hours)
+        """
+        try:
+            data = get_serializer().loads(token)
+            user_id = data.get('user_id')
+            user = User.query.get(user_id)
+            email = data.get('email')
+            if email:
+                user.email = email
+                user.verified = True
+                db.session.add(user)
+                db.session.commit()
+                return 'verified'
+        except (BadSignature, SignatureExpired) as e:
+            if isinstance(BadSignature, e):
+                return 'bad_signature'
+            if isinstance(SignatureExpired, e):
+                return 'signature_expired'
+        return 'unverified'
