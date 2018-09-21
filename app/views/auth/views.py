@@ -10,12 +10,12 @@ from app.extensions import openid
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login')
+@auth.route('/login', methods=('GET', 'POST'))
 def index():
     return 'This is the login route!'
 
 
-@auth.route('/register')
+@auth.route('/register', methods=('GET', 'POST'))
 def register():
     return 'This is the register route!'
 
