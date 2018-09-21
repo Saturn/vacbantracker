@@ -5,6 +5,7 @@ from flask import Blueprint, redirect, url_for
 from flask_login import current_user, logout_user, login_user, login_required
 
 from app.extensions import openid
+from app.models.user import User
 
 
 auth = Blueprint('auth', __name__)
@@ -31,7 +32,7 @@ def logout():
 @openid.loginhandler
 def login_with_steam():
     if current_user.is_authenticated:
-        return redirect(openid.get_next_url())
+        return redirect(url_for('main.index'))
     return openid.try_login('https://steamcommunity.com/openid')
 
 
@@ -44,4 +45,7 @@ def after_steam_login(resp):
     """
     match = re.search('steamcommunity.com/openid/id/(.*?)$', resp.identity_url)
     steamid = match.group(1)
-    return redirect(openid.get_next_url())
+    if steamid:
+        user = User.get_or_create_steam_user(steamid)
+        login_user(user)
+    return redirect(url_for('main.index'))
