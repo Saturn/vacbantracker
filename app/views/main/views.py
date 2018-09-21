@@ -9,4 +9,4 @@ main = Blueprint('main', __name__)
 def index():
     if current_user.is_authenticated and current_user.steam_oid:
         return 'Hi, {}'.format(current_user.steam_oid.profile.steamid)
-    return render_template('base.jinja2')
+    return render_template('index.j2')
