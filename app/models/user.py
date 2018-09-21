@@ -9,6 +9,7 @@ from app.extensions import db, bcrypt
 from app.steam.api import get_summaries_and_bans
 from app.models.steam_oid import SteamOID
 from app.models.profile import Profile
+from app.models.tracking import Tracking
 
 
 def get_serializer(expiration=None):
@@ -79,6 +80,39 @@ class User(db.Model, UserMixin):
             db.session.commit()
             return user
         return steam_user
+
+    def track_profile(self, profile, note=None):
+        """
+        Add profile for User to 'Track'
+        Args:
+            profile: The Profile to track
+            note: An optional note for user to better track a profile
+        Returns:
+            True if user successfully tracks profile else False
+        """
+        # Make sure user is not already tracking profile or
+        if self.steam_oid:  # user is a steam openid user
+            if profile.steamid == self.steam_oid.profile.steamid:
+                return False
+        # that user is not trying to track themselves
+        tracking = self.tracking.filter_by(profile=profile).first()
+        if tracking:
+            return False
+
+        profile_data = dict(x_personaname=profile.personaname,
+                            x_community_banned=profile.community_banned,
+                            x_days_since_last_ban=profile.days_since_last_ban,
+                            x_economy_ban=profile.economy_ban,
+                            x_num_game_bans=profile.num_game_bans,
+                            x_num_vac_bans=profile.num_vac_bans,
+                            x_vac_banned=profile.vac_banned)
+        tracking = Tracking(note=note,
+                            profile=profile,
+                            **profile_data)
+        self.tracking.append(tracking)
+        db.session.add(self)
+        db.session.commit()
+        return True
 
     def generate_email_verification_token(self, email=None, expiration=24*60*60):
         """
