@@ -93,3 +93,28 @@ class User(db.Model, UserMixin):
             if isinstance(SignatureExpired, e):
                 return 'signature_expired'
         return 'unverified'
+
+    def generate_forgot_password_token(self, expiration=3600):
+        """
+        Can only be used for non-steam accounts
+        Args:
+            expiration: Length of time in seconds the signed token is valid for
+        Returns:
+            Token which contains a user's id. Used to allow user to set password even
+            when not logged in (forgotten password)
+        """
+        return get_serializer(expiration).dumps({'user_id': self.id})
+
+    @staticmethod
+    def validate_forgot_password_token(token):
+        """
+        Args:
+            token: The token to verify. Contains a user_id
+        Returns:
+            The user_id or None.
+        """
+        try:
+            data = get_serializer().loads(token)
+            return data.get('user_id', None)
+        except (BadSignature, SignatureExpired):
+            return None
