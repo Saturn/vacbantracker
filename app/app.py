@@ -33,3 +33,9 @@ def make_shell_context():
 def initdb():
     db.drop_all()
     db.create_all()
+
+
+@app.cli.command('test', help='Run tests')
+def run_tests():
+    import pytest
+    pytest.main(['-v'])
