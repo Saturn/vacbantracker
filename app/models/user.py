@@ -6,7 +6,9 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
 
 from app.extensions import db, bcrypt
+from app.steam.api import get_summaries_and_bans
 from app.models.steam_oid import SteamOID
+from app.models.profile import Profile
 
 
 def get_serializer(expiration=None):
@@ -49,6 +51,33 @@ class User(db.Model, UserMixin):
         """
         return User.query.join(SteamOID)\
                          .filter(SteamOID.profile.has(steamid=steamid)).first()
+
+    @staticmethod
+    def get_or_create_steam_user(steamid):
+        """
+        If User with steamid already exists return that. If not, create
+        new User with linked steam_oid account and profile.
+
+        The user will not have an email yet if new.
+        Args:
+            steamid: The user's steamid got from steam openid
+        Returns:
+            The newly created or current steam User
+        """
+        steam_user = User.get_steam_user(steamid)
+        if not steam_user:
+            # all steam users also exist in profile table
+            profile = Profile.get(steamid)
+            if not profile:
+                data = get_summaries_and_bans([steamid])[0]
+                profile = Profile(**data)
+            user = User()
+            user.steam_oid = SteamOID()
+            user.steam_oid.profile = profile
+            db.session.add(user)
+            db.session.commit()
+            return user
+        return steam_user
 
     def generate_email_verification_token(self, email=None, expiration=24*60*60):
         """
