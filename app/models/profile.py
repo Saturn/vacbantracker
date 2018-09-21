@@ -59,5 +59,15 @@ class Profile(db.Model):
             kwargs['timecreated'] = unix_ts_to_dt(kwargs['timecreated'])
         self.__dict__.update(kwargs)
 
+    @staticmethod
+    def get(steamid):
+        """
+        Args:
+            steamid: The steamid we want to fetch
+        Returns:
+            Profile for steamid
+        """
+        return Profile.query.filter_by(steamid=steamid).first()
+
     def __repr__(self):
         return '<Profile steamid={}>'.format(self.steamid)
