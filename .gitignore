@@ -115,3 +115,5 @@ dmypy.json
 
 
 node_modules/
+app/static/
+
