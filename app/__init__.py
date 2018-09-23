@@ -5,12 +5,13 @@ from app.extensions import db, login_manager, bcrypt, openid
 
 from app.views.main.views import main
 from app.views.auth.views import auth
+from app.views.search.views import search
 
 
 def register_blueprints(app):
     app.register_blueprint(main)
     app.register_blueprint(auth)
-
+    app.register_blueprint(search)
 
 def register_extensions(app):
     db.init_app(app)
