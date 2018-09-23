@@ -18,7 +18,7 @@ def get_serializer(expiration=None):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True)
     _password = db.Column(db.String(255))
     timecreated = db.Column(db.DateTime, default=datetime.utcnow())
     verified = db.Column(db.Boolean, default=False)
@@ -36,6 +36,10 @@ class User(db.Model, UserMixin):
 
     def verify_pw(self, password):
         return bcrypt.check_password_hash(self.password, password)
+
+    @property
+    def steam_user(self):
+        return self.steam_oid != None
 
     def __repr__(self):
         output = '<User [Normal] {}>'.format(self.id)

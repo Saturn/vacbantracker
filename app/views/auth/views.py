@@ -17,7 +17,7 @@ auth = Blueprint('auth', __name__)
 def index():
     form = LoginForm()
     if form.validate_on_submit():
-        # login user
+        # login user. make sure user not a steam_oid account.
         pass
     return render_template('login.j2', form=form)
 
