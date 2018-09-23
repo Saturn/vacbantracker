@@ -15,6 +15,8 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=('GET', 'POST'))
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
         # login user. make sure user not a steam_oid account.
