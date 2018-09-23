@@ -1,0 +1,21 @@
+{% extends 'base.j2' %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col"></div>
+    <div class="col-lg-4 col-md-5">
+
+        <div class="card">
+          <div class="card-body">
+            {% include 'snippets/login_form.j2' %}
+          </div>
+        </div>
+
+    </div>
+    <div class="col"></div>
+</div>
+
+{% endblock content %}

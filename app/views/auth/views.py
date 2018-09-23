@@ -1,6 +1,6 @@
 import re
 
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, render_template
 
 from flask_login import current_user, logout_user, login_user
 
@@ -19,7 +19,7 @@ def index():
     if form.validate_on_submit():
         # login user
         pass
-    return 'This is the login route!'
+    return render_template('login.j2', form=form)
 
 
 @auth.route('/register', methods=('GET', 'POST'))
