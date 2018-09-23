@@ -1,3 +1,5 @@
+import os
+
 from app import create_app, db, login_manager
 
 from app.models.user import User
@@ -10,6 +12,7 @@ from app.steam.api import get_summaries, get_bans, get_summaries_and_bans
 
 app = create_app('default')
 
+root = os.path.dirname(os.path.realpath(__file__))
 
 @login_manager.user_loader
 def user_loader(id):
@@ -38,4 +41,4 @@ def initdb():
 @app.cli.command('test', help='Run tests')
 def run_tests():
     import pytest
-    pytest.main(['-v'])
+    pytest.main(['-v', root + '/../tests'])
