@@ -1,4 +1,3 @@
-ipdb==0.11
 requests==2.19.1
 Flask_OpenID==1.2.5
 pytz==2018.5
