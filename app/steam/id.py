@@ -4,11 +4,13 @@ import re
 BASE_STEAM_ID = 76561197960265728
 
 steamid_regexes = {
-    'vanity': re.compile('steamcommunity.com\/id\/(\w*)'),
+    #'vanity': re.compile('steamcommunity.com\/id\/(\w*)'),
     'steamid': re.compile('STEAM_[0|1]:[0|1]:\d+'),
     'steamid64': re.compile('7656119+\d{10}'),
     'steamid3': re.compile('\[U:1:\d+\]')
     }
+
+single_regex = '|'.join([reg.pattern for reg in steamid_regexes.values()])
 
 
 def is_steamid(steamid):
