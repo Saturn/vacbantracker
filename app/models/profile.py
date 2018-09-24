@@ -63,6 +63,18 @@ class Profile(db.Model):
         self.__dict__.update(kwargs)
 
     @staticmethod
+    def update_profile(profile, new_data):
+        translations = Profile.col_name_translation
+        for key in translations:
+            if key in new_data:
+                new_data[translations[key]] = new_data.pop(key)
+        new_data['lastlogoff'] = unix_ts_to_dt(new_data['lastlogoff'])
+        if 'timecreated' in new_data:
+            new_data['timecreated'] = unix_ts_to_dt(new_data['timecreated'])
+        profile.__dict__.update(new_data)
+        return profile
+
+    @staticmethod
     def get(steamid):
         """
         Args:
