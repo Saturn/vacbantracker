@@ -57,6 +57,9 @@ class Profile(db.Model):
         kwargs['lastlogoff'] = unix_ts_to_dt(kwargs['lastlogoff'])
         if 'timecreated' in kwargs:
             kwargs['timecreated'] = unix_ts_to_dt(kwargs['timecreated'])
+        # sometimes profilestate not set
+        if 'profilestate' not in kwargs:
+            kwargs['profilestate'] = 0
         self.__dict__.update(kwargs)
 
     @staticmethod
