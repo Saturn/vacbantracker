@@ -23,7 +23,7 @@ def search_view():
         steamids = re.findall(single_regex, data)
         steamids = [SteamID(steamid).steamid64 for steamid in steamids]
         # remove non-unique steamids and maintain order of search
-        steamids = list(OrderedDict.fromkeys(steamids).keys())[:100]
+        steamids = list(OrderedDict.fromkeys(steamids).keys())[:50]
         steamids_query = ','.join(steamids)
         url = url_for('search.search_view') + '?steamids=' + steamids_query
         return redirect(url)

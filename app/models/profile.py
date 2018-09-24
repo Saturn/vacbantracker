@@ -1,5 +1,6 @@
 from app.extensions import db
 from app.utils import unix_ts_to_dt
+from app.steam.api import get_summaries_and_bans
 
 
 class Profile(db.Model):
@@ -73,6 +74,36 @@ class Profile(db.Model):
             new_data['timecreated'] = unix_ts_to_dt(new_data['timecreated'])
         profile.__dict__.update(new_data)
         return profile
+
+    @staticmethod
+    def get_profiles(list_of_steamids):
+        """
+        Args:
+            list_of_steamids: steamids to get (int)
+        Returns:
+            list of Profile objects
+        """
+        api_data = get_summaries_and_bans(list_of_steamids)
+        all_steamids = set(list_of_steamids)
+        already_existing_profiles = Profile.query.filter(Profile.steamid.in_(all_steamids))\
+                                        .all()
+        already_existing = {}
+        for profile in already_existing_profiles:
+            already_existing[profile.steamid] = profile
+        already_existing_ids = already_existing.keys()
+        data = []
+        for acc in api_data:
+            if acc['steamid'] not in already_existing_ids:
+                data.append(Profile(**acc))
+            else:
+                profile = already_existing[acc['steamid']]
+                profile = Profile.update_profile(profile, acc)
+                data.append(profile)
+        db.session.add_all(data)
+        db.session.commit()
+        # slow sorting
+        data.sort(key=lambda x: list_of_steamids.index(int(x.steamid)))
+        return data
 
     @staticmethod
     def get(steamid):
