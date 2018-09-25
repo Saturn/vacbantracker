@@ -9,7 +9,7 @@
 
   <div class="form-group">
     {% set form_class = "form-control is-invalid" if form.email.errors else "form-control" %}
-    {{ form.email.label(class="control-label") }}
+    {{ form.email.label() }}
     <div>
       {{ form.email(class=form_class, placeholder="Email", required=True) }}
       {% if form.email.errors %}
@@ -24,7 +24,7 @@
 
   <div class="form-group">
     {% set form_class = "form-control is-invalid" if form.password.errors else "form-control" %}
-    {{ form.password.label(class="control-label") }}
+    {{ form.password.label() }}
     <div>
       {{ form.password(class=form_class, placeholder="Password", required=True) }}
       {% if form.password.errors %}
