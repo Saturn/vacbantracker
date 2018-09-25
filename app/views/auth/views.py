@@ -33,7 +33,7 @@ def register():
         # register and log  in user.
         # send verification token to email address
         pass
-    return 'This is the register route!'
+    return render_template('register.j2', form=form)
 
 
 @auth.route('/logout')
