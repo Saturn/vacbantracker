@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 from app.models.user import User
 
@@ -25,6 +25,13 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=password2_validation)
     password2 = PasswordField('Confirm Password', validators=password1_validation)
     submit = SubmitField('Register')
+
+    def validate_email(self, field):
+        query = User.query.with_entities(User.email)\
+                          .filter_by(email=field.data.lower())\
+                          .first()
+        if query:
+            raise ValidationError('Email already in use.')
 
 
 class ForgotPasswordForm(FlaskForm):
