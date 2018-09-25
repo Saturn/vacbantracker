@@ -55,7 +55,8 @@ class Profile(db.Model):
         for key in translations:
             if key in kwargs:
                 kwargs[translations[key]] = kwargs.pop(key)
-        kwargs['lastlogoff'] = unix_ts_to_dt(kwargs['lastlogoff'])
+        if 'lastlogoff' in kwargs:
+            kwargs['lastlogoff'] = unix_ts_to_dt(kwargs['lastlogoff'])
         if 'timecreated' in kwargs:
             kwargs['timecreated'] = unix_ts_to_dt(kwargs['timecreated'])
         # sometimes profilestate not set
@@ -69,7 +70,8 @@ class Profile(db.Model):
         for key in translations:
             if key in new_data:
                 new_data[translations[key]] = new_data.pop(key)
-        new_data['lastlogoff'] = unix_ts_to_dt(new_data['lastlogoff'])
+        if 'lastlogoff' in new_data:
+            new_data['lastlogoff'] = unix_ts_to_dt(new_data['lastlogoff'])
         if 'timecreated' in new_data:
             new_data['timecreated'] = unix_ts_to_dt(new_data['timecreated'])
         profile.__dict__.update(new_data)
@@ -85,10 +87,10 @@ class Profile(db.Model):
         """
         api_data = get_summaries_and_bans(list_of_steamids)
         all_steamids = set(list_of_steamids)
-        already_existing_profiles = Profile.query.filter(Profile.steamid.in_(all_steamids))\
-                                        .all()
+        existing_profiles = Profile.query.filter(Profile.steamid.in_(all_steamids))\
+                                         .all()
         already_existing = {}
-        for profile in already_existing_profiles:
+        for profile in existing_profiles:
             already_existing[profile.steamid] = profile
         already_existing_ids = already_existing.keys()
         data = []
