@@ -104,7 +104,9 @@ class Profile(db.Model):
         db.session.add_all(data)
         db.session.commit()
         # slow sorting
-        data.sort(key=lambda x: list_of_steamids.index(int(x.steamid)))
+        # data.sort(key=lambda x: list_of_steamids.index(int(x.steamid)))
+        sort_order = {v: i for i, v in enumerate(list_of_steamids)}
+        data.sort(key=lambda x: sort_order[int(x.steamid)])
         return data
 
     @staticmethod
