@@ -1,10 +1,16 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, EqualTo
+
+from app.models.user import User
 
 
 password_validation = [Length(min=8, message='Password must be at least 8 characters.'),
                        DataRequired()]
+equal1 = [EqualTo('password', 'Password\'s do not match.')]
+equal2 = [EqualTo('password2', 'Password\'s do not match.')]
+password1_validation = password_validation + equal1
+password2_validation = password_validation + equal2
 
 
 class LoginForm(FlaskForm):
@@ -16,7 +22,8 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=password_validation)
+    password = PasswordField('Password', validators=password2_validation)
+    password2 = PasswordField('Confirm Password', validators=password1_validation)
     submit = SubmitField('Register')
 
 
@@ -26,11 +33,13 @@ class ForgotPasswordForm(FlaskForm):
 
 
 class NewPasswordForm(FlaskForm):
-    password = PasswordField('New Password', validators=password_validation)
+    password = PasswordField('New Password', validators=password2_validation)
+    password2 = PasswordField('Confirm New Password', validators=password1_validation)
     submit = SubmitField('Save New Password')
 
 
 class ChangePasswordForm(FlaskForm):
-    password = PasswordField('Current Password', validators=password_validation)
-    new_password = PasswordField('New Password', validators=password_validation)
+    current_password = PasswordField('Current Password', validators=password_validation)
+    password = PasswordField('New Password', validators=password2_validation)
+    password2 = PasswordField('Confirm New Password', validators=password1_validation)
     submit = SubmitField('Change Password')

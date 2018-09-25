@@ -33,6 +33,21 @@
   </div>
 
   <div class="form-group">
+    {% set form_class = "form-control is-invalid" if form.password2.errors else "form-control" %}
+    {{ form.password2.label() }}
+    <div>
+      {{ form.password2(class=form_class, placeholder="Confirm Password", required=True) }}
+      {% if form.password2.errors %}
+         <div class="invalid-feedback">
+            {% for error in form.password2.errors %}
+                  {{ error }}
+            {% endfor %}
+          </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="form-group">
     <div>
       {{ form.submit(class="btn btn-success") }}
     </div>
