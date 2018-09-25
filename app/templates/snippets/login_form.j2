@@ -1,51 +1,68 @@
 
-<form method="POST" action="/login">
-  {{ form.hidden_tag() }}
+<div class="card">
+  <div class="card-body">
 
-  <div class="form-group">
-    {% set form_class = "form-control is-invalid" if form.email.errors else "form-control" %}
-    {{ form.email.label() }}
-    <div>
-      {{ form.email(class=form_class, placeholder="Email", required=True) }}
-      {% if form.email.errors %}
-         <div class="invalid-feedback">
+
+    <form method="POST" action="/login">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        {% set form_class = "form-control is-invalid" if form.email.errors else "form-control" %}
+        {{ form.email.label() }}
+        <div>
+          {{ form.email(class=form_class, placeholder="Email", required=True) }}
+          {% if form.email.errors %}
+          <div class="invalid-feedback">
             {% for error in form.email.errors %}
-                  {{ error }}
+            {{ error }}
             {% endfor %}
           </div>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="form-group">
-    {% set form_class = "form-control is-invalid" if form.password.errors else "form-control" %}
-    {{ form.password.label() }}
-    <div>
-      {{ form.password(class=form_class, placeholder="Password", required=True) }}
-      {% if form.password.errors %}
-         <div class="invalid-feedback">
-            {% for error in form.password.errors %}
-                  {{ error }}
-            {% endfor %}
-          </div>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="form-group">
-    <div class="checkbox">
-      <label>
-        {{ form.remember() }} Remember me
-      </label>
-      <div class="float-right">
-        <a href="/forgot_password">Forgot Password</a>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="form-group">
-    <div>
-      {{ form.submit(class="btn btn-success") }}
-    </div>
+      <div class="form-group">
+        {% set form_class = "form-control is-invalid" if form.password.errors else "form-control" %}
+        {{ form.password.label() }}
+        <div>
+          {{ form.password(class=form_class, placeholder="Password", required=True) }}
+          {% if form.password.errors %}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+            {{ error }}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            {{ form.remember() }} Remember me
+          </label>
+          <div class="float-right">
+            <a href="/forgot_password">Forgot Password</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div>
+          {{ form.submit(class="btn btn-success") }}
+        </div>
+      </div>
+    </form>
+
+
+
   </div>
-</form>
+  <div class="card-header text-center">
+    <a href="/register">Register for an Account</a>
+  </div>
+  <div class="card-header text-center">
+    <a href="/login/steam">
+      <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" />
+    </a>
+  </div>
+</div>
