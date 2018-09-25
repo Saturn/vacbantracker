@@ -18,8 +18,8 @@ class Profile(db.Model):
     avatarfull = db.Column(db.String(255))
     personastate = db.Column(db.Integer, nullable=False)
 
-    time_added = db.Column(db.DateTime, default=datetime.utcnow())
-    time_updated = db.Column(db.DateTime, default=datetime.utcnow())
+    # time_added = db.Column(db.DateTime, default=datetime.utcnow())
+    # time_updated = db.Column(db.DateTime, default=datetime.utcnow())
 
     # optional
     commentpermission = db.Column(db.Integer)
