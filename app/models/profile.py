@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.extensions import db
 from app.utils import unix_ts_to_dt
 from app.steam.api import get_summaries_and_bans
@@ -15,6 +17,9 @@ class Profile(db.Model):
     avatarmedium = db.Column(db.String(255))
     avatarfull = db.Column(db.String(255))
     personastate = db.Column(db.Integer, nullable=False)
+
+    time_added = db.Column(db.DateTime, default=datetime.utcnow())
+    time_updated = db.Column(db.DateTime, default=datetime.utcnow())
 
     # optional
     commentpermission = db.Column(db.Integer)
@@ -50,6 +55,9 @@ class Profile(db.Model):
         """
         Make api data match column names on profile table
         and convert unix timestamps to datetime objects
+
+        Certain keys may not appear in api data so must check
+        they exist before trying to use them.
         """
         translations = Profile.col_name_translation
         for key in translations:
