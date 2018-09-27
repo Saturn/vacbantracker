@@ -104,9 +104,9 @@ class Profile(db.Model):
         # then do not fetch api data. Just serve old data.
         fetch = True
         time_window = datetime.utcnow() - timedelta(minutes=30)
-        time_updated = (x.time_updated > time_window for x in existing_profiles)
+        is_fresh = (x.time_updated > time_window for x in existing_profiles)
         if len(existing_profiles) == len(list_of_steamids):
-            if all(time_updated):
+            if all(is_fresh):
                 print("Will not fetch")
                 fetch = False
 
