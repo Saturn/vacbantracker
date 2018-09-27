@@ -107,7 +107,6 @@ class Profile(db.Model):
         is_fresh = (x.time_updated > time_window for x in existing_profiles)
         if len(existing_profiles) == len(list_of_steamids):
             if all(is_fresh):
-                print("Will not fetch")
                 fetch = False
 
         if fetch:
