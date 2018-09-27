@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app.extensions import db
 from app.utils import unix_ts_to_dt
@@ -18,8 +18,8 @@ class Profile(db.Model):
     avatarfull = db.Column(db.String(255))
     personastate = db.Column(db.Integer, nullable=False)
 
-    # time_added = db.Column(db.DateTime, default=datetime.utcnow())
-    # time_updated = db.Column(db.DateTime, default=datetime.utcnow())
+    time_added = db.Column(db.DateTime, default=datetime.utcnow())
+    time_updated = db.Column(db.DateTime, default=datetime.utcnow())
 
     # optional
     commentpermission = db.Column(db.Integer)
@@ -83,6 +83,7 @@ class Profile(db.Model):
         if 'timecreated' in new_data:
             new_data['timecreated'] = unix_ts_to_dt(new_data['timecreated'])
         profile.__dict__.update(new_data)
+        profile.time_updated = datetime.utcnow()
         return profile
 
     @staticmethod
@@ -92,23 +93,40 @@ class Profile(db.Model):
             list_of_steamids: steamids to get (int)
         Returns:
             list of Profile objects
+
+        Doesn't fetch from API if all profiles are <30 mins old
         """
-        api_data = get_summaries_and_bans(list_of_steamids)
         all_steamids = set(list_of_steamids)
         existing_profiles = Profile.query.filter(Profile.steamid.in_(all_steamids))\
                                          .all()
-        already_existing = {}
-        for profile in existing_profiles:
-            already_existing[profile.steamid] = profile
-        already_existing_ids = already_existing.keys()
-        data = []
-        for acc in api_data:
-            if acc['steamid'] not in already_existing_ids:
-                data.append(Profile(**acc))
-            else:
-                profile = already_existing[acc['steamid']]
-                profile = Profile.update_profile(profile, acc)
-                data.append(profile)
+
+        # if all profiles exist and were updated less than 30 mins ago
+        # then do not fetch api data. Just serve old data.
+        fetch = True
+        time_window = datetime.utcnow() - timedelta(minutes=30)
+        time_updated = (x.time_updated > time_window for x in existing_profiles)
+        if len(existing_profiles) == len(list_of_steamids):
+            if all(time_updated):
+                print("Will not fetch")
+                fetch = False
+
+        if fetch:
+            api_data = get_summaries_and_bans(list_of_steamids)
+            already_existing = {}
+            for profile in existing_profiles:
+                already_existing[profile.steamid] = profile
+            already_existing_ids = already_existing.keys()
+            data = []
+            for acc in api_data:
+                if acc['steamid'] not in already_existing_ids:
+                    data.append(Profile(**acc))
+                else:
+                    profile = already_existing[acc['steamid']]
+                    profile = Profile.update_profile(profile, acc)
+                    data.append(profile)
+        else:
+            data = existing_profiles
+
         db.session.add_all(data)
         db.session.commit()
         # slow sorting
