@@ -111,13 +111,10 @@ class Profile(db.Model):
 
         if fetch:
             api_data = get_summaries_and_bans(list_of_steamids)
-            already_existing = {}
-            for profile in existing_profiles:
-                already_existing[profile.steamid] = profile
-            already_existing_ids = already_existing.keys()
+            already_existing = {x.steamid: x for x in existing_profiles}
             data = []
             for acc in api_data:
-                if acc['steamid'] not in already_existing_ids:
+                if acc['steamid'] not in already_existing:
                     data.append(Profile(**acc))
                 else:
                     profile = already_existing[acc['steamid']]
