@@ -5,7 +5,8 @@ from flask import Blueprint, render_template, request, redirect, url_for
 
 from flask_login import current_user
 
-from app.steam.id import single_regex, SteamID
+from app.steam.id import single_regex, SteamID, is_steamid64
+from app.models.profile import Profile
 
 
 search = Blueprint('search', __name__)
@@ -29,4 +30,7 @@ def search_view():
         return redirect(url)
 
     if request.method == 'GET':
-        return request.args.get('steamids')
+        steamids = request.args.get('steamids').split(',')
+        steamids = [steamid for steamid in steamids if is_steamid64(steamid)]
+        profiles = Profile.get_profiles(steamids)
+        return render_template('search.j2', profiles=profiles)
