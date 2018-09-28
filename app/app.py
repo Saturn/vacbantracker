@@ -14,6 +14,12 @@ app = create_app('default')
 
 root = os.path.dirname(os.path.realpath(__file__))
 
+
+def to_dict(model):
+    cols = model.__table__.columns.keys()
+    return {x: getattr(model, x) for x in cols}
+
+
 @login_manager.user_loader
 def user_loader(id):
     return User.query.get(int(id))
@@ -29,7 +35,8 @@ def make_shell_context():
                 SteamOID=SteamOID,
                 get_summaries=get_summaries,
                 get_bans=get_bans,
-                get_summaries_and_bans=get_summaries_and_bans)
+                get_summaries_and_bans=get_summaries_and_bans,
+                to_dict=to_dict)
 
 
 @app.cli.command('initdb', help='Recreate db')
