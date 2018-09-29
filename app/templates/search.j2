@@ -4,11 +4,47 @@
 
 {% block content %}
 
+
 <div class="row">
     <div class="col">
-        {% for profile in profiles %}
-        <p>{{ profile.personaname }} - {{ profile.steamid }}</p>
-        {% endfor %}
+        <h3>Search</h3>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+
+
+        <table id="search-results" class="table table-hover table-responsive-sm table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">SteamID64</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for profile in profiles %}
+            <tr data-steamid={{ profile.steamid }}>
+              <th scope="row">{{ loop.index }}</th>
+              <td>{{ profile.personaname }}</td>
+              <td>{{ profile.steamid }}</td>
+              <td>
+                {% if current_user.is_authenticated %}
+                    <button type="button" class="btn btn-success btn-sm">Track</button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+
+
+          </tbody>
+        </table>
+
+
     </div>
 </div>
 
