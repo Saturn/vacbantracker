@@ -25,9 +25,11 @@
 
     </div>
 
+    {% if not current_user.is_authenticated %}
     <div class="col-xl-4 col-lg-5 col-md-7">
         {% include 'snippets/login_form.j2' %}
     </div>
+    {% endif %}
 
 
 </div>
