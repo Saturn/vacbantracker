@@ -4,7 +4,7 @@ from flask import Blueprint, redirect, url_for, render_template, flash
 
 from flask_login import current_user, logout_user, login_user
 
-from app.extensions import openid
+from app.extensions import openid, db
 from app.models.user import User
 
 from .forms import (LoginForm,
@@ -39,9 +39,15 @@ def register():
         return redirect(url_for('main.index'))
     form = RegisterForm()
     if form.validate_on_submit():
-        # register and log  in user.
-        # send verification token to email address
-        pass
+        email = form.email.data.lower()
+        password = form.password.data
+        user = User(email=email,
+                    password=password)
+        db.session.add(user)
+        db.session.commit()
+        # email token here
+        login_user(user)
+        return redirect(url_for('main.index'))
     return render_template('register.j2', form=form)
 
 
