@@ -46,7 +46,8 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         output = '<User {} [Normal] {}>'.format(self.id, self.email)
         if self.steam_oid:
-            output = '<User [Steam] steamid={}>'.format(self.steam_oid.profile.steamid)
+            steamid = self.steam_oid.profile.steamid
+            output = '<User {} [Steam] steamid={}>'.format(self.id, steamid)
         return output
 
     @staticmethod
