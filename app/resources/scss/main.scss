@@ -42,6 +42,7 @@ body {
 }
 
 .search-box {
+  @extend .jumbotron;
   padding: 40px 25px 40px 25px;
 }
 
