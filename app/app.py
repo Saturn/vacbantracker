@@ -39,7 +39,7 @@ def make_shell_context():
                 get_bans=get_bans,
                 get_summaries_and_bans=get_summaries_and_bans,
                 to_dict=to_dict,
-                u = User.query.first())
+                u=User.query.first())
 
 
 @app.cli.command('initdb', help='Recreate db')
