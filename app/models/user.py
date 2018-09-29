@@ -39,10 +39,10 @@ class User(db.Model, UserMixin):
 
     @property
     def steam_user(self):
-        return self.steam_oid != None
+        return self.steam_oid is not None
 
     def __repr__(self):
-        output = '<User [Normal] {}>'.format(self.id)
+        output = '<User {} [Normal] {}>'.format(self.id, self.email)
         if self.steam_oid:
             output = '<User [Steam] steamid={}>'.format(self.steam_oid.profile.steamid)
         return output
