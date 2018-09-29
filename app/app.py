@@ -38,13 +38,18 @@ def make_shell_context():
                 get_summaries=get_summaries,
                 get_bans=get_bans,
                 get_summaries_and_bans=get_summaries_and_bans,
-                to_dict=to_dict)
+                to_dict=to_dict,
+                u = User.query.first())
 
 
 @app.cli.command('initdb', help='Recreate db')
 def initdb():
     db.drop_all()
     db.create_all()
+    u = User(email='patrick@patrickmcmichael.org',
+             password='password1')
+    db.session.add(u)
+    db.session.commit()
 
 
 @app.cli.command('test', help='Run tests')
