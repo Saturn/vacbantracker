@@ -3,11 +3,14 @@ from datetime import datetime, timedelta
 from app.extensions import db
 from app.utils import unix_ts_to_dt
 from app.steam.api import get_summaries_and_bans
+from app.steam.id import SteamID
 
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     steamid = db.Column(db.String(255), nullable=False)
+    steamid_ = db.Column(db.String(255), nullable=False)
+    steamid3 = db.Column(db.String(255), nullable=False)
     communityvisibilitystate = db.Column(db.Integer, nullable=False)
     profilestate = db.Column(db.Integer, nullable=False)
     personaname = db.Column(db.String(255))
@@ -59,6 +62,9 @@ class Profile(db.Model):
         Certain keys may not appear in api data so must check
         they exist before trying to use them.
         """
+        s = SteamID(kwargs['steamid'])
+        kwargs['steamid_'] = s.steamid
+        kwargs['steamid3'] = s.steamid3
         translations = Profile.col_name_translation
         for key in translations:
             if key in kwargs:
