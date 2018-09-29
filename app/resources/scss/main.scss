@@ -16,13 +16,26 @@ body {
   width: 100%;
   height: 60px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
-  background-color: grey;
+  background-color: white;
+  font-size: 0.9rem;
 }
 
-.footer > .container > p {
+.footer-links {
+  list-style: none;
+  float: right;
   margin: 0;
 }
 
+.footer-links > li {
+    float: left;
+    display: inline-block;
+    padding-right: 10px;
+}
+
+.footer-copyright {
+  display: inline-block;
+  margin: 0;
+}
 
 .navbar {
   margin-bottom: 20px;
