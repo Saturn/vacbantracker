@@ -7,12 +7,9 @@ from app.models.profile import Profile
 from app.models.tracking import Tracking
 from app.models.steam_oid import SteamOID
 
-from app.steam.api import get_summaries, get_bans, get_summaries_and_bans
-
-
-app = create_app('default')
-
-root = os.path.dirname(os.path.realpath(__file__))
+from app.steam.api import (get_summaries,
+                           get_bans,
+                           get_summaries_and_bans)
 
 
 def to_dict(model):
@@ -23,6 +20,11 @@ def to_dict(model):
 @login_manager.user_loader
 def user_loader(id):
     return User.query.get(int(id))
+
+
+app = create_app('default')
+
+root = os.path.dirname(os.path.realpath(__file__))
 
 
 @app.shell_context_processor
