@@ -1,13 +1,16 @@
 import re
 
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, flash
 
 from flask_login import current_user, logout_user, login_user
 
 from app.extensions import openid
 from app.models.user import User
 
-from .forms import LoginForm, RegisterForm, ChangePasswordForm, ForgotPasswordForm
+from .forms import (LoginForm,
+                    RegisterForm,
+                    ChangePasswordForm,
+                    ForgotPasswordForm)
 
 
 auth = Blueprint('auth', __name__)
@@ -19,8 +22,14 @@ def index():
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        # login user. make sure user not a steam_oid account.
-        pass
+        email = form.email.data.lower()
+        password = form.password.data
+        user = User.query.filter_by(email=email).first()
+        if user and user.verify_pw(password):
+            login_user(user, form.remember.data)
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid email/password', 'danger')
     return render_template('login.j2', form=form)
 
 
