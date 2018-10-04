@@ -28,13 +28,13 @@
           <tbody>
 
             {% for profile in profiles %}
-            <tr data-steamid={{ profile.steamid }}>
+            <tr data-steamid="{{ profile.steamid }}">
               <th scope="row">{{ loop.index }}</th>
               <td>{{ profile.personaname }}</td>
               <td>{{ profile.steamid }}</td>
               <td>
                 {% if current_user.is_authenticated %}
-                    <button type="button" class="btn btn-success btn-sm">Track</button>
+                    <button type="button" class="btn btn-success btn-sm track-button">Track</button>
                 {% endif %}
               </td>
             </tr>

@@ -1,5 +1,5 @@
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, Response, json
 
 from flask_login import login_required, current_user
 
@@ -23,14 +23,14 @@ def track():
     if is_steamid64(steamid):
         tracked = current_user.track_profile(Profile.get(steamid), note)
 
-    output = {'code': None, 'message': None}
     if tracked:
-        output['code'] = 200
-        output['message'] = 'Succesfully tracked profile.'
+        code = 200
+        message = 'Succesfully tracked profile.'
     else:
-        output['code'] = 400
-        output['message'] = 'Something went wrong.'
-    return jsonify(output)
+        code = 400
+        message = 'Something went wrong.'
+    data = json.dumps(dict(message=message, code=code))
+    return Response(data, status=code, mimetype='application/json')
 
 
 @profile.route('/untrack', methods=('POST',))
