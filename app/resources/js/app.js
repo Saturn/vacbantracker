@@ -12,12 +12,30 @@ const makeFlash = (message, category) => {
       <span aria-hidden="true">&times;</span>
     </button>
   </div>`);
-}
+};
+
 
 const clearFlashes = () => {
   $(".flashes").html("");
-}
+};
 
+
+const trackProfile = (e) => {
+  const row = $(e.target).parent().parent()
+  const steamid = row.data('steamid');
+  const note = '';
+  const data = {steamid: steamid,
+                note: note};
+  $.post('/track', data, () => trackSuccess(row));
+};
+
+
+const trackSuccess = (row) => {
+  console.log(row)
+};
+
+
+$('.track-button').bind("click", trackProfile);
 
 window.makeFlash = makeFlash;
 window.clearFlashes = clearFlashes;
