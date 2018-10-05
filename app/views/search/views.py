@@ -33,4 +33,13 @@ def search_view():
         steamids = request.args.get('steamids').split(',')
         steamids = [steamid for steamid in steamids if is_steamid64(steamid)]
         profiles = Profile.get_profiles(steamids)
+        if current_user.is_authenticated:
+            already_tracking = current_user.tracking.join(Profile)\
+                                                    .filter(Profile.steamid.in_(steamids))\
+                                                    .all()
+            if already_tracking:
+                already_tracking = {x.steam_profile.steamid: x for x in already_tracking}
+                for profile in profiles:
+                    if profile.steamid in already_tracking:
+                        profile.tracking_info = already_tracking[profile.steamid]
         return render_template('search.j2', profiles=profiles)

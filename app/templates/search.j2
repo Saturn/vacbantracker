@@ -33,7 +33,7 @@
               <td>{{ profile.personaname }}</td>
               <td>{{ profile.steamid }}</td>
               <td>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and profile.tracking_info is undefined%}
                     <button type="button" class="btn btn-success btn-sm track-button">Track</button>
                 {% endif %}
               </td>
