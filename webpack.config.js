@@ -60,10 +60,11 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/app.css',
       chunkFilename: '[id].css'
-    }),
-    new PurifyCSSPlugin({
-      // Give paths to parse for rules. These should be absolute!
-      paths: glob.sync(path.join(__dirname, 'app/templates/*.j2')),
     })
+    // ,
+    // new PurifyCSSPlugin({
+    //   // Give paths to parse for rules. These should be absolute!
+    //   paths: glob.sync(path.join(__dirname, 'app/templates/*.j2')),
+    // })
   ]
 };
