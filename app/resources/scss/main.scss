@@ -47,6 +47,7 @@ body {
 }
 
 .footer {
+  @extend .bg-dark;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -63,12 +64,13 @@ body {
 }
 
 .footer-links > li {
-    float: left;
-    display: inline-block;
-    padding-right: 10px;
+  float: left;
+  display: inline-block;
+  padding-right: 10px;
 }
 
 .footer-copyright {
+  @extend .text-white;
   display: inline-block;
   margin: 0;
 }
