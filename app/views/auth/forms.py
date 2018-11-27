@@ -36,7 +36,13 @@ class RegisterForm(FlaskForm):
 
 class ForgotPasswordForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Send password reset email')
+
+    def validate_email(self, field):
+        if not User.query.with_entities(User.email)\
+                         .filter_by(email=field.data.lower())\
+                         .first():
+            raise ValidationError('An account with that email address does not exist.')
 
 
 class NewPasswordForm(FlaskForm):
