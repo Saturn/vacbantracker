@@ -136,7 +136,7 @@ class User(db.Model, UserMixin):
                                                  'email': email})
 
     @staticmethod
-    def validate_email(token):
+    def validate_email(token=''):
         """
         Args:
             token: The token which contains an email address
@@ -177,7 +177,7 @@ class User(db.Model, UserMixin):
         return get_serializer(expiration).dumps({'user_id': self.id})
 
     @staticmethod
-    def validate_forgot_password_token(token):
+    def validate_forgot_password_token(token=''):
         """
         Args:
             token: The token to verify. Contains a user_id
