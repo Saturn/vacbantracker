@@ -93,7 +93,16 @@
       </div>
       <div class="card-body">
         <p class="card-text">Track this profile in order to get notifications about future bans.</p>
-        <a href="#" class="btn btn-primary">Track</a>
+
+        <form action="/track" method='post'>
+          <div class="form-group">
+          <textarea class="tracking-note" name='note' rows=5 placeholder="Optional note to attach"></textarea>
+          </div>
+          <div class="form-group text-center">
+          <button class="btn btn-lg btn-success" type='submit'>Track</button>
+          </div>
+        </form>
+
       </div>
     </div>
   </div>
