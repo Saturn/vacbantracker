@@ -103,11 +103,14 @@ def new_password():
         form.token.data = token
         if form.validate_on_submit():
             user = User.query.get(user_id)
-            user.password = form.password.data
-            db.session.add(user)
-            db.session.commit()
-            flash('Successfully reset password. Please login.', 'success')
-            return redirect(url_for('auth.login'))
+            # make sure token is same as 'current' user token
+            if token == user.reset_token:
+                user.password = form.password.data
+                user.reset_token = ''
+                db.session.add(user)
+                db.session.commit()
+                flash('Successfully reset password. Please login.', 'success')
+                return redirect(url_for('auth.login'))
     else:
         flash('Invalid token.', 'danger')
         return redirect(url_for('main.index'))
