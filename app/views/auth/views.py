@@ -1,6 +1,6 @@
 import re
 
-from flask import Blueprint, redirect, url_for, render_template, flash
+from flask import Blueprint, redirect, url_for, render_template, flash, request
 
 from flask_login import current_user, logout_user, login_user
 
@@ -57,15 +57,29 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@auth.route('/forgot_password')
+@auth.route('/forgot_password', methods=('GET', 'POST'))
 def forgot_password():
+    """
+    Sends email token which will contain link so user can
+    reset their password.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = ForgotPasswordForm()
     if form.validate_on_submit():
-        # send token to email
-        pass
-    return 'This is the forgot password route!'
+        email = form.email.data.lower()
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = user.generate_forgot_password_token()
+            # email token here
+            url = url_for('auth.new_password', token=token, _external=True)
+            email = render_template('email/forgot_password.txt',
+                                    email=user.email,
+                                    url=url)
+            print(email)
+            flash('A password reset token has been sent.', 'success')
+            return redirect(url_for('main.index'))
+    return render_template('forgot_password.j2', form=form)
 
 
 @auth.route('/new_password')
