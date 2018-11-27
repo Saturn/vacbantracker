@@ -1,4 +1,4 @@
-## VACBanTracker
+## VACBanTracker [![Build Status](https://travis-ci.com/Saturn/vacbantracker.svg?branch=master)](https://travis-ci.com/Saturn/vacbantracker)
 
 ### Work in progress
 
