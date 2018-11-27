@@ -7,6 +7,7 @@ from app.views.main.views import main
 from app.views.auth.views import auth
 from app.views.search.views import search
 from app.views.profile.views import profile
+from app.views.settings.views import settings
 
 
 def register_blueprints(app):
@@ -14,6 +15,7 @@ def register_blueprints(app):
     app.register_blueprint(auth)
     app.register_blueprint(search)
     app.register_blueprint(profile)
+    app.register_blueprint(settings)
 
 
 def register_extensions(app):
