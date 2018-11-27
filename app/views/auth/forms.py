@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 from app.models.user import User
@@ -46,6 +46,7 @@ class ForgotPasswordForm(FlaskForm):
 
 
 class NewPasswordForm(FlaskForm):
+    token = HiddenField(validators=[DataRequired()])
     password = PasswordField('New Password', validators=password2_validation)
     password2 = PasswordField('Confirm New Password', validators=password1_validation)
     submit = SubmitField('Save New Password')

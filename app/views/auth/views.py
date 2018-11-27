@@ -10,7 +10,8 @@ from app.models.user import User
 from .forms import (LoginForm,
                     RegisterForm,
                     ChangePasswordForm,
-                    ForgotPasswordForm)
+                    ForgotPasswordForm,
+                    NewPasswordForm)
 
 
 auth = Blueprint('auth', __name__)
@@ -82,16 +83,36 @@ def forgot_password():
     return render_template('forgot_password.j2', form=form)
 
 
-@auth.route('/new_password')
+@auth.route('/new_password', methods=('GET', 'POST'))
 def new_password():
+    """
+    Validates password reset token and if it is valid
+    presents user with form to set a new password.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = NewPasswordForm()
-    if form.validate_on_submit():
-        # save user new password and redirect
-        # to login screen
-        pass
-    return 'This is the new password route!'
+
+    # we get token from querystring the first time (get)
+    # this gets added to the form as a hidden field
+    # for additional post requests
+    token = request.args.get('token') or request.form.get('token')
+    if token:
+        form.token.data = token
+        user_id = User.validate_forgot_password_token(token)
+        if user_id:
+            if form.validate_on_submit():
+                user_id = User.validate_forgot_password_token(token)
+                if user_id:
+                    user = User.query.get(user_id)
+                    user.password = form.password.data
+                    db.session.add(user)
+                    db.session.commit()
+                    flash('Successfully reset password. Please login.', 'success')
+                    return redirect(url_for('auth.login'))
+    else:
+        return redirect(url_for('main.index'))
+    return render_template('new_password.j2', form=form)
 
 
 @auth.route('/login/steam')
