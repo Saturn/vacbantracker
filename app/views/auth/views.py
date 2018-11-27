@@ -34,6 +34,12 @@ def login():
     return render_template('login.j2', form=form)
 
 
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+
 @auth.route('/register', methods=('GET', 'POST'))
 def register():
     if current_user.is_authenticated:
@@ -46,15 +52,26 @@ def register():
                     password=password)
         db.session.add(user)
         db.session.commit()
-        # email token here
+        token = user.generate_email_verification_token()
+        url = url_for('auth.verify_email', token=token, _external=True)
+        email_msg = render_template('email/welcome.txt',
+                                    url=url,
+                                    email=user.email)
+        print(email_msg)
+        flash('Welcome. An email verification message has been sent to {}'.format(email), 'success')
         login_user(user)
         return redirect(url_for('main.index'))
     return render_template('register.j2', form=form)
 
 
-@auth.route('/logout')
-def logout():
-    logout_user()
+@auth.route('/verify')
+def verify_email():
+    token = request.args.get('token')
+    status = User.validate_email(token)
+    if status == 'verified':
+        flash('Succesfully verified email address', 'success')
+    else:
+        flash('Invalid verification token', 'danger')
     return redirect(url_for('main.index'))
 
 
@@ -74,10 +91,10 @@ def forgot_password():
             token = user.generate_forgot_password_token()
             # email token here
             url = url_for('auth.new_password', token=token, _external=True)
-            email = render_template('email/forgot_password.txt',
-                                    email=user.email,
-                                    url=url)
-            print(email)
+            email_msg = render_template('email/forgot_password.txt',
+                                        email=user.email,
+                                        url=url)
+            print(email_msg)
             flash('A password reset token has been sent.', 'success')
             return redirect(url_for('main.index'))
     return render_template('forgot_password.j2', form=form)

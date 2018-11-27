@@ -1,0 +1,15 @@
+Hi,
+
+Welcome to VACBanTracker.com.
+
+
+Please click the following link in order to verify your email address.
+
+{{ url }}
+
+
+{{ email }}
+
+
+Thanks,
+VACBanTracker.com
