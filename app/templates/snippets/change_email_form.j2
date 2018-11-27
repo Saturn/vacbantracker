@@ -1,0 +1,25 @@
+
+<form method="post" action="/settings">
+  {{ email_form.hidden_tag() }}
+
+  <div class="form-group">
+    {% set form_class = "form-control is-invalid" if email_form.email.errors else "form-control" %}
+    {{ email_form.email.label() }}
+    <div>
+      {{ email_form.email(class=form_class, placeholder="New Email", required=True) }}
+      {% if email_form.email.errors %}
+         <div class="invalid-feedback">
+            {% for error in email_form.email.errors %}
+                  {{ error }}
+            {% endfor %}
+          </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div>
+      {{ email_form.submit(class="btn btn-success") }}
+    </div>
+  </div>
+</form>

@@ -1,0 +1,73 @@
+{% extends 'base.j2' %}
+
+{% block title %}Settings{% endblock title %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <h3>Settings</h3>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-5">
+
+
+
+        {% set email_verified_label %}
+          {% if current_user.verified %}
+            <span class="badge badge-success">Verified</span>
+          {% else %}
+            <span class="badge badge-danger">Unverified</span>
+          {% endif %}
+        {% endset %}
+
+
+
+
+        <div class="card mb-3">
+          <div class="card-header">
+            Account Information
+          </div>
+          <div class="card-body">
+            <p>Account Type</p>
+            <p><strong>{{ current_user.email }}</strong>{{ email_verified_label }}</p>
+          </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card">
+          <div class="card-header">
+            Change Password
+          </div>
+          <div class="card-body">
+            {% include 'snippets/change_password_form.j2' %}
+          </div>
+        </div>
+
+
+        <div class="card mt-3">
+          <div class="card-header">
+            Change Email
+          </div>
+          <div class="card-body">
+            {% include 'snippets/change_email_form.j2' %}
+          </div>
+        </div>
+
+
+
+
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+
+
+{% endblock content %}

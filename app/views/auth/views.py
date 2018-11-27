@@ -2,7 +2,7 @@ import re
 
 from flask import Blueprint, redirect, url_for, render_template, flash, request
 
-from flask_login import current_user, logout_user, login_user
+from flask_login import current_user, logout_user, login_user, login_required
 
 from app.extensions import openid, db
 from app.models.user import User
@@ -11,7 +11,8 @@ from .forms import (LoginForm,
                     RegisterForm,
                     ChangePasswordForm,
                     ForgotPasswordForm,
-                    NewPasswordForm)
+                    NewPasswordForm,
+                    ChangeEmailForm)
 
 
 auth = Blueprint('auth', __name__)
@@ -58,7 +59,8 @@ def register():
                                     url=url,
                                     email=user.email)
         print(email_msg)
-        flash('Welcome. An email verification message has been sent to {}'.format(email), 'success')
+        flash(('Welcome. An email verification message'
+               'has been sent to {}'.format(email), 'success'))
         login_user(user)
         return redirect(url_for('main.index'))
     return render_template('register.j2', form=form)
@@ -132,6 +134,35 @@ def new_password():
         flash('Invalid token.', 'danger')
         return redirect(url_for('main.index'))
     return render_template('new_password.j2', form=form)
+
+
+@auth.route('/settings', methods=('GET', 'POST'))
+@login_required
+def settings_index():
+    """
+    Two forms exist on this page
+    """
+    pw_form = ChangePasswordForm(prefix='pw')
+    email_form = ChangeEmailForm()
+
+    if pw_form.submit.data and change_pw_form.pw_form():
+        if not current_user.verify_pw(pw_form.current_password.data):
+            pw_form.current_password.errors.append('Wrong password.')
+
+    if email_form.submit.data and email_form.validate_on_submit():
+        new_email = email_form.email.data.lower()
+        token = current_user.generate_email_verification_token(new_email)
+        url = url_for('auth.verify_email', token=token, _external=True)
+        email_msg = render_template('email/change_email.txt', url=url, email=new_email)
+        print(email_msg)
+        flash('Email verification has been sent to ' + new_email, 'success')
+        current_user.email = new_email
+        current_user.verified = False
+        db.session.add(current_user)
+        db.session.commit()
+    return render_template('settings.j2',
+                           pw_form=pw_form,
+                           email_form=email_form)
 
 
 @auth.route('/login/steam')

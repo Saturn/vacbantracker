@@ -57,3 +57,15 @@ class ChangePasswordForm(FlaskForm):
     password = PasswordField('New Password', validators=password2_validation)
     password2 = PasswordField('Confirm New Password', validators=password1_validation)
     submit = SubmitField('Change Password')
+
+
+class ChangeEmailForm(FlaskForm):
+    email = StringField('New Email Address', validators=[DataRequired(), Email()])
+    submit = SubmitField('Change Email')
+
+    def validate_email(self, field):
+        query = User.query.with_entities(User.email)\
+                          .filter_by(email=field.data.lower())\
+                          .first()
+        if query:
+            raise ValidationError('Email already in use.')
