@@ -97,20 +97,19 @@ def new_password():
     # this gets added to the form as a hidden field
     # for additional post requests
     token = request.args.get('token') or request.form.get('token')
-    if token:
+    # token is valid if this returns user_id from token
+    user_id = User.validate_forgot_password_token(token)
+    if user_id:
         form.token.data = token
-        user_id = User.validate_forgot_password_token(token)
-        if user_id:
-            if form.validate_on_submit():
-                user_id = User.validate_forgot_password_token(token)
-                if user_id:
-                    user = User.query.get(user_id)
-                    user.password = form.password.data
-                    db.session.add(user)
-                    db.session.commit()
-                    flash('Successfully reset password. Please login.', 'success')
-                    return redirect(url_for('auth.login'))
+        if form.validate_on_submit():
+            user = User.query.get(user_id)
+            user.password = form.password.data
+            db.session.add(user)
+            db.session.commit()
+            flash('Successfully reset password. Please login.', 'success')
+            return redirect(url_for('auth.login'))
     else:
+        flash('Invalid token.', 'danger')
         return redirect(url_for('main.index'))
     return render_template('new_password.j2', form=form)
 
