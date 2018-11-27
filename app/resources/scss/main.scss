@@ -84,3 +84,21 @@ body {
   padding: 40px 25px 40px 25px;
 }
 
+.steam-profile-table {
+  td {
+    border: 0;
+  }
+}
+
+.steam-profile-table td:nth-child(1) {
+  text-align: right;
+  font-weight: bold;
+}
+
+.steam-profile-table-ids {
+  margin-left: 20px;
+}
+
+.steam-profile-table-bans {
+  margin-right: 25px;
+}

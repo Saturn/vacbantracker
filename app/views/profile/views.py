@@ -1,5 +1,5 @@
 
-from flask import Blueprint, jsonify, request, Response, json
+from flask import Blueprint, jsonify, request, Response, json, render_template
 
 from flask_login import login_required, current_user
 
@@ -12,7 +12,10 @@ profile = Blueprint('profile', __name__)
 
 @profile.route('/id/<steamid>')
 def profile_view(steamid):
-    return "This is the profile view"
+    profile = None
+    if is_steamid64(steamid):
+        profile = Profile.get_profiles([steamid])[0]
+    return render_template('profile.j2', profile=profile)
 
 
 @profile.route('/track', methods=('POST',))

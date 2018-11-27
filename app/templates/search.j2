@@ -30,7 +30,7 @@
             {% for profile in profiles %}
             <tr data-steamid="{{ profile.steamid }}">
               <th scope="row">{{ loop.index }}</th>
-              <td>{{ profile.personaname }}</td>
+              <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
               <td>{{ profile.steamid }}</td>
               <td>
                 {% if current_user.is_authenticated and profile.tracking_info is undefined%}

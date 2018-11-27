@@ -1,0 +1,106 @@
+{% extends 'base.j2' %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+
+
+<div class="row">
+  <div class="col-lg-8">
+    <h3>Steam Profile</h3>
+    <hr />
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">{{ profile.personaname }}</h3>
+        <p><a href="https://steamcommunity.com/profiles/{{ profile.steamid }}" target="_blank">https://steamcommunity.com/profiles/{{ profile.steamid }}</a></p>
+        <p></p>
+
+        <div class="row justify-content-between">
+
+          <div class="col-xs-6">
+            <table class="table table-sm steam-profile-table steam-profile-table-ids">
+              <tbody>
+                <tr>
+                  <td>Steam Name</td>
+                  <td>{{ profile.personaname }}</td>
+                </tr>
+                <tr>
+                  <td>SteamID</td>
+                  <td>{{ profile.steamid_ }}</td>
+                </tr>
+                <tr>
+                  <td>SteamID64</td>
+                  <td>{{ profile.steamid }}</td>
+                </tr>
+                <tr>
+                  <td>SteamID3</td>
+                  <td>{{ profile.steamid3 }}</td>
+                </tr>
+                <tr>
+                  <td>Created</td>
+                  <td>todo</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-xs-6">
+            <table class="table table-sm steam-profile-table steam-profile-table-bans">
+              <tbody>
+                <tr>
+                  <td>VAC Ban</td>
+                  <td>{{ profile.vac_banned }}</td>
+                </tr>
+                <tr>
+                  <td>Community Ban</td>
+                  <td>{{ profile.community_banned }}</td>
+                </tr>
+                <tr>
+                  <td>Profile Privacy</td>
+                  <td>{{ profile.steamid }}</td>
+                </tr>
+                <tr>
+                  <td>SteamID3</td>
+                  <td>{{ profile.steamid3 }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+        <a href="#" class="btn btn-primary">Do something</a>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+  {% if current_user.is_authenticated %}
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        Track
+      </div>
+      <div class="card-body">
+        <p class="card-text">Track this profile in order to get notifications about future bans.</p>
+        <a href="#" class="btn btn-primary">Track</a>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+
+</div>
+
+{% endblock content %}
