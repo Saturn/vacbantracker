@@ -81,8 +81,15 @@ body {
 }
 
 .search-box {
+  @extend .border;
+  @extend .border-info;
   @extend .jumbotron;
   padding: 40px 25px 40px 25px;
+}
+
+.search-box textarea {
+  @extend .border;
+  @extend .border-info;
 }
 
 .steam-profile-table {
