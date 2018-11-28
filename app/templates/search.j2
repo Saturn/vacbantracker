@@ -6,46 +6,64 @@
 
 
 <div class="row">
-    <div class="col">
-        <h3>Search</h3>
-        <hr />
-    </div>
+  <div class="col">
+    <h3>Search</h3>
+    <hr />
+  </div>
 </div>
 
 <div class="row">
-    <div class="col-lg-8">
+
+  {% if profiles is not none %}
+  <div class="col-lg-8">
+    <table id="search-results" class="table table-hover table-responsive-sm table-sm">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">SteamID64</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for profile in profiles %}
+        <tr data-steamid="{{ profile.steamid }}">
+          <th scope="row">{{ loop.index }}</th>
+          <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
+          <td>{{ profile.steamid }}</td>
+          <td>
+            {% if current_user.is_authenticated and profile.tracking_info is undefined%}
+            <button type="button" class="btn btn-success btn-sm track-button">Track</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
 
 
-        <table id="search-results" class="table table-hover table-responsive-sm table-sm">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">SteamID64</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-
-            {% for profile in profiles %}
-            <tr data-steamid="{{ profile.steamid }}">
-              <th scope="row">{{ loop.index }}</th>
-              <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
-              <td>{{ profile.steamid }}</td>
-              <td>
-                {% if current_user.is_authenticated and profile.tracking_info is undefined%}
-                    <button type="button" class="btn btn-success btn-sm track-button">Track</button>
-                {% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-
-
-          </tbody>
-        </table>
-
-
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="col-lg-8">
+    {% include 'snippets/search_box.j2' %}
+  </div>
+  <div class="col-lg-4">
+    <div class="card border border-info">
+      <div class="card-header"><strong>Example of correct input.</strong></div>
+      <div class="card-body">
+        <p class="font-weight-bold">STEAM_0:0:46862</p>
+        <p class="font-weight-bold">76561197960359452</p>
+        <p class="font-weight-bold">[U:1:93724]</p>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <p>You can search for up to 50 ids at the same time.</p>
+        </div>
+      </div>
     </div>
+  </div>
+  {% endif %}
 </div>
 
 {% endblock content %}

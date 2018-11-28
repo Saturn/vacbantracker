@@ -22,6 +22,8 @@ def search_view():
         data = request.form.get('steamids')
         data = data.replace('STEAM_1', 'STEAM_0')
         steamids = re.findall(single_regex, data)
+        if not steamids:
+            return redirect(url_for('search.search_view'))
         steamids = [SteamID(steamid).steamid64 for steamid in steamids]
         # remove non-unique steamids and maintain order of search
         steamids = list(OrderedDict.fromkeys(steamids).keys())[:50]
@@ -30,16 +32,23 @@ def search_view():
         return redirect(url)
 
     if request.method == 'GET':
-        steamids = request.args.get('steamids').split(',')
-        steamids = [steamid for steamid in steamids if is_steamid64(steamid)]
-        profiles = Profile.get_profiles(steamids)
-        if current_user.is_authenticated:
-            already_tracking = current_user.tracking.join(Profile)\
-                                                    .filter(Profile.steamid.in_(steamids))\
-                                                    .all()
-            if already_tracking:
-                already_tracking = {x.steam_profile.steamid: x for x in already_tracking}
-                for profile in profiles:
-                    if profile.steamid in already_tracking:
-                        profile.tracking_info = already_tracking[profile.steamid]
+        steamids = request.args.get('steamids')
+        profiles = None
+        if steamids:
+            steamids = steamids.split(',')
+            steamids = [steamid for steamid in steamids if is_steamid64(steamid)]
+            profiles = Profile.get_profiles(steamids)
+
+            # if the user is logged in we need to check if they are
+            # already tracking any profiles
+            if current_user.is_authenticated:
+                tracking = current_user.tracking.join(Profile)\
+                                                .filter(Profile.steamid.in_(steamids))\
+                                                .all()
+                if tracking:
+                    tracking = {x.steam_profile.steamid: x for x in tracking}
+                    for profile in profiles:
+                        if profile.steamid in tracking:
+                            profile.tracking_info = tracking[profile.steamid]
+
         return render_template('search.j2', profiles=profiles)
