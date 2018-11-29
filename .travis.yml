@@ -7,6 +7,7 @@ before_install:
   - cd $TRAVIS_BUILD_DIR
 install:
   - pip install -r requirements.txt
+  - pip install pytest-cov
 script:
   - pytest tests --doctest-modules -v --cov app
 after_success:
