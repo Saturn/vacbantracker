@@ -8,11 +8,11 @@
     <div>
       {{ form.email(class=form_class, placeholder="Email", required=True) }}
       {% if form.email.errors %}
-         <div class="invalid-feedback">
-            {% for error in form.email.errors %}
-                  {{ error }}
-            {% endfor %}
-          </div>
+      <div class="invalid-feedback">
+        {% for error in form.email.errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
       {% endif %}
     </div>
   </div>
@@ -23,11 +23,11 @@
     <div>
       {{ form.password(class=form_class, placeholder="Password", required=True) }}
       {% if form.password.errors %}
-         <div class="invalid-feedback">
-            {% for error in form.password.errors %}
-                  {{ error }}
-            {% endfor %}
-          </div>
+      <div class="invalid-feedback">
+        {% for error in form.password.errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
       {% endif %}
     </div>
   </div>
@@ -38,11 +38,11 @@
     <div>
       {{ form.password2(class=form_class, placeholder="Confirm Password", required=True) }}
       {% if form.password2.errors %}
-         <div class="invalid-feedback">
-            {% for error in form.password2.errors %}
-                  {{ error }}
-            {% endfor %}
-          </div>
+      <div class="invalid-feedback">
+        {% for error in form.password2.errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
       {% endif %}
     </div>
   </div>

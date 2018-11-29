@@ -1,25 +1,25 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../../../favicon.ico">
 
-    <title>{% block title %}{% endblock %} - VACBantracker</title>
+  <title>{% block title %}{% endblock %} - VACBantracker</title>
 
-    <link href="/static/css/app.css" rel="stylesheet">
+  <link href="/static/css/app.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
 
 
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <div class="container">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container">
 
       <a class="navbar-brand" href="/">VACBanTracker</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,41 +57,69 @@
         </ul>
       </div>
 
+    </div>
+  </nav>
+
+
+
+
+
+
+  <div class="container">
+
+    <div class="flashes">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+
+      {% for category, message in messages %}
+      {% if category == "message" %}
+      {% set category = "info" %}
+      {% endif %}
+
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </nav>
+
+      {% endfor %}
+
+      {% endif %}
+      {% endwith %}
+    </div>
+
+
+
+    {% block content %}<h1>This is the base template.</h1>{% endblock content %}
 
 
 
 
 
 
+
+
+
+
+  </div><!-- /.container -->
+
+
+
+  <footer class="footer">
     <div class="container">
-
-      <div class="flashes">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-
-        {% for category, message in messages %}
-          {% if category == "message" %}
-            {% set category = "info" %}
-          {% endif %}
-
-          <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-        {% endfor %}
-
-        {% endif %}
-        {% endwith %}
-      </div>
+      <p class="footer-copyright">
+        VACBanTracker &copy 2018
+      </p>
+      <ul class="footer-links">
+        <li><a href="/about">About</a></li>
+        <li><a href="/privacy_policy">Privacy Policy</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
 
 
-
-          {% block content %}<h1>This is the base template.</h1>{% endblock content %}
+    </div>
+  </footer>
 
 
 
@@ -100,34 +128,6 @@
 
 
 
-
-
-    </div><!-- /.container -->
-
-
-
-    <footer class="footer">
-      <div class="container">
-        <p class="footer-copyright">
-          VACBanTracker &copy 2018
-        </p>
-        <ul class="footer-links">
-          <li><a href="/about">About</a></li>
-          <li><a href="/privacy_policy">Privacy Policy</a></li>
-          <li><a href="/feedback">Feedback</a></li>
-        </ul>
-
-
-      </div>
-    </footer>
-
-
-
-
-
-
-
-
-    <script src="/static/js/app.js"></script>
-  </body>
+  <script src="/static/js/app.js"></script>
+</body>
 </html>

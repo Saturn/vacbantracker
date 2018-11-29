@@ -8,11 +8,11 @@
     <div>
       {{ add_email_form.email(class=form_class, placeholder="Email", required=True) }}
       {% if add_email_form.email.errors %}
-         <div class="invalid-feedback">
-            {% for error in add_email_form.email.errors %}
-                  {{ error }}
-            {% endfor %}
-          </div>
+      <div class="invalid-feedback">
+        {% for error in add_email_form.email.errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
       {% endif %}
     </div>
   </div>
