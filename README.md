@@ -1,4 +1,4 @@
-## VACBanTracker [![Build Status](https://travis-ci.com/Saturn/vacbantracker.svg?branch=master)](https://travis-ci.com/Saturn/vacbantracker)
+## VACBanTracker [![Build Status](https://travis-ci.com/Saturn/vacbantracker.svg?branch=master)](https://travis-ci.com/Saturn/vacbantracker) [![Coverage Status](https://coveralls.io/repos/github/Saturn/vacbantracker/badge.svg?branch=master)](https://coveralls.io/github/Saturn/vacbantracker?branch=master)
 
 ### Work in progress
 
