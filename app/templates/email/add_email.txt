@@ -1,0 +1,16 @@
+Hi,
+
+
+You have add an email address on VACBanTracker.com.
+
+
+Please click the following link in order to verify your new email address.
+
+{{ url }}
+
+
+{{ email }}
+
+
+Thanks,
+VACBanTracker.com
