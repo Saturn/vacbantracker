@@ -27,7 +27,7 @@
 
 
 
-        <div class="card mb-3">
+        <div class="card">
           <div class="card-header">
             Account Information
           </div>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="col-lg-4 col-md-6">
-
+        {% if not current_user.steam_user %}
         <div class="card">
           <div class="card-header">
             Change Password
@@ -51,9 +51,10 @@
             {% include 'snippets/change_password_form.j2' %}
           </div>
         </div>
+        {% endif %}
 
 
-        <div class="card mt-3">
+        <div class="card">
           <div class="card-header">
             Change Email
           </div>
