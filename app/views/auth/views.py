@@ -12,7 +12,8 @@ from .forms import (LoginForm,
                     ChangePasswordForm,
                     ForgotPasswordForm,
                     NewPasswordForm,
-                    ChangeEmailForm)
+                    ChangeEmailForm,
+                    AddEmailForm)
 
 
 auth = Blueprint('auth', __name__)
@@ -140,10 +141,14 @@ def new_password():
 @login_required
 def settings_index():
     """
-    Two forms exist on this page
+    There is two different email forms.
+    One for changing a currently set email (for normal and steam accounts)
+    and another for setting an email for a steam account that has never
+    set one before.
     """
     pw_form = ChangePasswordForm(prefix='pw')
     email_form = ChangeEmailForm()
+    add_email_form = AddEmailForm(prefix='add')
 
     if pw_form.submit.data and pw_form.validate_on_submit():
         password = pw_form.password.data
@@ -155,7 +160,7 @@ def settings_index():
         else:
             pw_form.current_password.errors.append('Wrong password')
 
-    if email_form.submit.data and email_form.validate_on_submit():
+    elif email_form.submit.data and email_form.validate_on_submit():
         new_email = email_form.email.data.lower()
         token = current_user.generate_email_verification_token(new_email)
         url = url_for('auth.verify_email', token=token, _external=True)
@@ -166,9 +171,23 @@ def settings_index():
         current_user.verified = False
         db.session.add(current_user)
         db.session.commit()
+
+    elif add_email_form.submit.data and add_email_form.validate_on_submit():
+        new_email = add_email_form.email.data.lower()
+        token = current_user.generate_email_verification_token(new_email)
+        url = url_for('auth.verify_email', token=token, _external=True)
+        email_msg = render_template('email/add_email.txt', url=url, email=new_email)
+        print(email_msg)
+        flash('Email verification has been sent to ' + new_email, 'success')
+        current_user.email = new_email
+        current_user.verified = False
+        db.session.add(current_user)
+        db.session.commit()
+
     return render_template('settings.j2',
                            pw_form=pw_form,
-                           email_form=email_form)
+                           email_form=email_form,
+                           add_email_form=add_email_form)
 
 
 @auth.route('/login/steam')

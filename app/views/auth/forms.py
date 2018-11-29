@@ -69,3 +69,15 @@ class ChangeEmailForm(FlaskForm):
                           .first()
         if query:
             raise ValidationError('Email already in use.')
+
+
+class AddEmailForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Add Email Address')
+
+    def validate_email(self, field):
+        query = User.query.with_entities(User.email)\
+                          .filter_by(email=field.data.lower())\
+                          .first()
+        if query:
+            raise ValidationError('Email already in use.')

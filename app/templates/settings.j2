@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% set steam_user = current_user.steam_user %}
+
 <div class="row">
     <div class="col">
         <h3>Settings</h3>
@@ -26,16 +28,29 @@
 
 
 
-
+        {% if steam_user and current_user.email is none %}
         <div class="card">
           <div class="card-header">
             Account Information
           </div>
           <div class="card-body">
-            <p>Account Type</p>
+            <p>You do not currently do not have an email address associated with your account.</p>
+            {% include 'snippets/add_email_form.j2' %}
+          </div>
+        </div>
+        {% endif %}
+
+
+        {% if current_user.email is not none %}
+        <div class="card">
+          <div class="card-header">
+            Account Information
+          </div>
+          <div class="card-body">
             <p><strong>{{ current_user.email }}</strong>{{ email_verified_label }}</p>
           </div>
         </div>
+        {% endif %}
 
 
 
@@ -54,6 +69,7 @@
         {% endif %}
 
 
+        {% if current_user.email %}
         <div class="card">
           <div class="card-header">
             Change Email
@@ -62,6 +78,7 @@
             {% include 'snippets/change_email_form.j2' %}
           </div>
         </div>
+        {% endif %}
 
 
 
