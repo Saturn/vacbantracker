@@ -63,11 +63,7 @@
                 </tr>
                 <tr>
                   <td>Profile Privacy</td>
-                  <td>{{ profile.steamid }}</td>
-                </tr>
-                <tr>
-                  <td>SteamID3</td>
-                  <td>{{ profile.steamid3 }}</td>
+                  <td>{{ profile.get_privacy() }}</td>
                 </tr>
               </tbody>
             </table>

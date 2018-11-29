@@ -147,5 +147,13 @@ class Profile(db.Model):
         """
         return Profile.query.filter_by(steamid=steamid).first()
 
+    def get_privacy(self):
+        states = {1: 'Private',
+                  2: 'Friends Only',
+                  3: 'Friends of Friends',
+                  4: 'Users Only',
+                  5: 'Public'}
+        return states.get(self.communityvisibilitystate, 'Unknown')
+
     def __repr__(self):
         return '<Profile steamid={}>'.format(self.steamid)
