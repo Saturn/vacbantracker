@@ -47,11 +47,13 @@ def test_password_salt(setup):
     u2 = User(password='testing1')
     assert u1.password != u2.password
 
+
 def test_password_change(setup):
     u = User(password='testing1')
     u.password = 'testing13'
     assert not u.verify_pw('testing1')
     assert u.verify_pw('testing13')
+
 
 def test_valid_password_change_token(setup):
     u = User(password='testing1')
@@ -60,11 +62,13 @@ def test_valid_password_change_token(setup):
     token = u.generate_forgot_password_token()
     assert u.validate_forgot_password_token(token)
 
+
 def test_invalid_password_change_token(setup):
     u = User(password='testing1')
     db.session.add(u)
     db.session.commit()
     assert u.validate_forgot_password_token('FaKeToKEn') is None
+
 
 def test_email_verification_token(setup):
     u = User(email='bob@example.com')

@@ -1,5 +1,5 @@
 
-from flask import Blueprint, jsonify, request, Response, json, render_template
+from flask import Blueprint, request, Response, json, render_template
 
 from flask_login import login_required, current_user
 
