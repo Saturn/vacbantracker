@@ -1,5 +1,7 @@
 import os
 
+import click
+
 from app import create_app, db, login_manager
 
 from app.models.user import User
@@ -42,7 +44,7 @@ def make_shell_context():
                 u=User.query.first())
 
 
-@app.cli.command('initdb', help='Recreate db')
+@app.cli.command('initdb', help='Recreate db.')
 def initdb():
     db.drop_all()
     db.create_all()
@@ -53,6 +55,18 @@ def initdb():
 
 
 @app.cli.command('test', help='Run tests')
-def run_tests():
+@click.option('--coverage', is_flag=True,
+              help='Run tests with coverage.')
+def run_tests(coverage):
     import pytest
-    pytest.main(['-v', root + '/../tests'])
+    import subprocess
+    test_dir = root + '/../tests'
+    if coverage:
+        subprocess.call(['pytest',
+                        test_dir,
+                        '--doctest-modules',
+                        '-v',
+                        '--cov',
+                        'app'])
+    else:
+        pytest.main(['-v', test_dir])

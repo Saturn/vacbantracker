@@ -7,10 +7,9 @@ before_install:
   - cd $TRAVIS_BUILD_DIR
 install:
   - pip install -r requirements.txt
-  - pip install pytest-cov
-  - pip install coveralls
+  - pip install pytest-cov coveralls
 script:
-  - pytest tests --doctest-modules -v --cov app
+  - flask test --coverage
 after_success:
   - coveralls
 env:
