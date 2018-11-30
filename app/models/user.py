@@ -175,7 +175,7 @@ class User(db.Model, UserMixin):
             Token which contains a user's id. Used to allow user to set password even
             when not logged in (forgotten password)
         """
-        token = get_serializer(expiration).dumps({'user_id': self.id}).decode("utf-8")
+        token = get_serializer(expiration).dumps({'user_id': self.id}).decode('utf-8')
         self.reset_token = token
         db.session.add(self)
         db.session.commit()

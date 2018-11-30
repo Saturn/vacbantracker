@@ -18,6 +18,8 @@ class BaseConfig:
     MAIL_SENDER = ''
     STEAM_API_KEY = os.environ.get('STEAM_API_KEY')
     SITE_TITLE = "VACBanTracker"
+    SECRET_KEY = 'This is the flask secret key'
+    WTF_CSRF_SECRET_KEY = 'This is the wtf csrf secret key'
 
 
 class DevelopmentConfig(BaseConfig):
@@ -25,8 +27,6 @@ class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
         'sqlite:///' + os.path.join(basedir, 'dev.db')
     WTF_CSRF_ENABLED = True
-    SECRET_KEY = 'This is the flask secret key'
-    WTF_CSRF_SECRET_KEY = 'This is the wtf csrf secret key'
 
 
 class TestingConfig(BaseConfig):
