@@ -67,6 +67,20 @@ def register():
     return render_template('register.j2', form=form)
 
 
+@auth.route('/resend')
+@login_required
+def resend():
+    token = current_user.generate_email_verification_token()
+    url = url_for('auth.verify_email', token=token, _external=True)
+    email = current_user.email
+    email_msg = render_template('email/verify.txt',
+                                url=url,
+                                email=email)
+    print(email_msg)
+    flash('Verification email has been sent to {}'.format(email), 'success')
+    return redirect(url_for('auth.settings_index'))
+
+
 @auth.route('/verify')
 def verify_email():
     token = request.args.get('token')
