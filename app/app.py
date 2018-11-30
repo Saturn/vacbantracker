@@ -46,12 +46,13 @@ def make_shell_context():
 
 @app.cli.command('initdb', help='Recreate db.')
 def initdb():
-    db.drop_all()
-    db.create_all()
-    u = User(email='patrick@patrickmcmichael.org',
-             password='password1')
-    db.session.add(u)
-    db.session.commit()
+    if app.config['ENV'] == 'development':
+        db.drop_all()
+        db.create_all()
+        u = User(email='patrick@example.org',
+                 password='password1')
+        db.session.add(u)
+        db.session.commit()
 
 
 @app.cli.command('test', help='Run tests')
@@ -63,10 +64,10 @@ def run_tests(coverage):
     test_dir = root + '/../tests'
     if coverage:
         subprocess.call(['pytest',
-                        test_dir,
-                        '--doctest-modules',
-                        '-v',
-                        '--cov',
-                        'app'])
+                         test_dir,
+                         '--doctest-modules',
+                         '-v',
+                         '--cov',
+                         'app'])
     else:
         pytest.main(['-v', test_dir])
