@@ -118,9 +118,16 @@ def test_change_email(setup):
     assert u.email == new_email
 
 
-def test_get_or_create_steam_user(setup, steam_mock):
+def test_create_steam_user(setup, steam_mock):
     with steam_mock:
         steamid = '76561198066693739'
         u = User.get_or_create_steam_user(steamid)
         assert u.steam_oid is not None
         assert u.steam_oid.profile.steamid == steamid
+
+
+def test_get_steam_user(setup, steam_mock):
+    with steam_mock:
+        steamid = '76561198066693739'
+        u = User.get_or_create_steam_user(steamid)
+        assert User.get_or_create_steam_user(steamid) is u
