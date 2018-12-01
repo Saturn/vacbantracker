@@ -6,12 +6,12 @@ from requests import get
 from app.utils import convert_pacific_to_utc, get_pacific_tz_year
 
 
-steam_api_key = os.environ.get('STEAM_API_KEY')
+STEAM_API_KEY = os.environ.get('STEAM_API_KEY')
 
-steam_api_url = 'http://api.steampowered.com/'
-player_summaries = steam_api_url + 'ISteamUser/GetPlayerSummaries/v2'
-player_bans = steam_api_url + 'ISteamUser/GetPlayerBans/v1'
-aliases_url = 'https://steamcommunity.com/profiles/{steamid}/ajaxaliases'
+STEAM_API_URL = 'http://api.steampowered.com/'
+PLAYER_SUMMARIES_URL = STEAM_API_URL + 'ISteamUser/GetPlayerSummaries/v2'
+PLAYER_BANS_URL = STEAM_API_URL + 'ISteamUser/GetPlayerBans/v1'
+ALIASES_URL = 'https://steamcommunity.com/profiles/{steamid}/ajaxaliases'
 
 
 def stringify_steamids(list_of_steamids):
@@ -32,8 +32,8 @@ def get_summaries(steamids):
         List of player summaries from Steam API
     """
     steamids = stringify_steamids(steamids)
-    summaries = get(player_summaries,
-                    params=dict(key=steam_api_key,
+    summaries = get(PLAYER_SUMMARIES_URL,
+                    params=dict(key=STEAM_API_KEY,
                                 steamids=steamids))
     if summaries.status_code == 200:
         return summaries.json()['response']['players']
@@ -47,8 +47,8 @@ def get_bans(steamids):
         List of player ban info from Steam API
     """
     steamids = stringify_steamids(steamids)
-    bans = get(player_bans,
-               params=dict(key=steam_api_key,
+    bans = get(PLAYER_BANS_URL,
+               params=dict(key=STEAM_API_KEY,
                            steamids=steamids))
     if bans.status_code == 200:
         # rename SteamId key to steamid
@@ -89,7 +89,7 @@ def get_aliases(steamid):
     Returns:
         List of aliases from steam profile
     """
-    aliases = get(aliases_url.format(steamid=steamid))
+    aliases = get(ALIASES_URL.format(steamid=steamid))
     if aliases.status_code == 200:
         aliases = aliases.json()
 

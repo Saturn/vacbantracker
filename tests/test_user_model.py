@@ -6,6 +6,8 @@ import requests_mock
 from app.models.user import User
 from app import db, create_app
 
+from app.steam.api import PLAYER_BANS_URL, PLAYER_SUMMARIES_URL
+
 
 @pytest.fixture
 def setup():
@@ -17,6 +19,24 @@ def setup():
     db.session.remove()
     db.drop_all()
     app.app_context.pop()
+
+
+@pytest.fixture
+def steam_mock():
+    bans = summaries = None
+    with open('tests/data/bans.json', 'r') as f:
+        bans = json.loads(f.read())
+    with open('tests/data/summaries.json', 'r') as f:
+        summaries = json.loads(f.read())
+
+    mock = requests_mock.mock()
+    mock.register_uri('GET',
+                      PLAYER_BANS_URL,
+                      json=bans)
+    mock.register_uri('GET',
+                      PLAYER_SUMMARIES_URL,
+                      json=summaries)
+    return mock
 
 
 def test_user_create(setup):
@@ -98,20 +118,8 @@ def test_change_email(setup):
     assert u.email == new_email
 
 
-def test_get_or_create_steam_user(setup):
-    bans = summaries = None
-    with open('tests/data/bans.json', 'r') as f:
-        bans = json.loads(f.read())
-    with open('tests/data/summaries.json', 'r') as f:
-        summaries = json.loads(f.read())
-
-    mock = requests_mock.mock()
-    with mock as m:
-        m.get('http://api.steampowered.com/ISteamUser/GetPlayerBans/v1',
-              json=bans)
-        m.get('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2',
-              json=summaries)
-
+def test_get_or_create_steam_user(setup, steam_mock):
+    with steam_mock:
         steamid = '76561198066693739'
         u = User.get_or_create_steam_user(steamid)
         assert u.steam_oid is not None
