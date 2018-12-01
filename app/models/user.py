@@ -122,16 +122,16 @@ class User(db.Model, UserMixin):
         db.session.commit()
         return True
 
-    def send_verification_email(self, email_type='welcome', email=None):
+    def send_verification_email(self, email=None, email_type='welcome'):
         """
         Sends a verification email
         """
         if not email:
             email = self.email
         templates = {'welcome': 'email/welcome.txt',
-                     'new': 'add_email.txt',
-                     'change': 'change_email.txt',
-                     'normal': 'verify.txt'}
+                     'new': 'email/add_email.txt',
+                     'change': 'email/change_email.txt',
+                     'normal': 'email/verify.txt'}
         template = templates[email_type]
         token = self.generate_email_verification_token(email)
         url = url_for('auth.verify_email', token=token, _external=True)
