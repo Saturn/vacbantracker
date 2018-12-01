@@ -140,6 +140,12 @@ class User(db.Model, UserMixin):
                                     email=email)
         print(email_msg)
 
+    def change_email(self, new_email):
+        self.email = new_email
+        self.verified = False
+        db.session.add(self)
+        db.session.commit()
+
     def generate_email_verification_token(self, email=None, expiration=24*60*60):
         """
         Args:
