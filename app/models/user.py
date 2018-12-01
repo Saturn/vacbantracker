@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import current_app
+from flask import current_app, url_for, render_template
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
@@ -121,6 +121,24 @@ class User(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
         return True
+
+    def send_verification_email(self, email_type='welcome', email=None):
+        """
+        Sends a verification email
+        """
+        if not email:
+            email = self.email
+        templates = {'welcome': 'email/welcome.txt',
+                     'new': 'add_email.txt',
+                     'change': 'change_email.txt',
+                     'normal': 'verify.txt'}
+        template = templates[email_type]
+        token = self.generate_email_verification_token(email)
+        url = url_for('auth.verify_email', token=token, _external=True)
+        email_msg = render_template(template,
+                                    url=url,
+                                    email=email)
+        print(email_msg)
 
     def generate_email_verification_token(self, email=None, expiration=24*60*60):
         """
