@@ -1,4 +1,7 @@
+import json
 import pytest
+import requests_mock
+
 
 from app.models.user import User
 from app import db, create_app
@@ -76,3 +79,23 @@ def test_email_verification_token(setup):
     db.session.commit()
     token = u.generate_email_verification_token()
     assert u.validate_email(token) == 'verified'
+
+
+def test_get_or_create_steam_user(setup):
+    bans = summaries = None
+    with open('tests/data/bans.json', 'r') as f:
+        bans = json.loads(f.read())
+    with open('tests/data/summaries.json', 'r') as f:
+        summaries = json.loads(f.read())
+
+    mock = requests_mock.mock()
+    with mock as m:
+        m.get('http://api.steampowered.com/ISteamUser/GetPlayerBans/v1',
+              json=bans)
+        m.get('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2',
+              json=summaries)
+
+        steamid = '76561198066693739'
+        u = User.get_or_create_steam_user(steamid)
+        assert u.steam_oid is not None
+        assert u.steam_oid.profile.steamid == steamid

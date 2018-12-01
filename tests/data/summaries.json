@@ -1,0 +1,19 @@
+{
+    "response": {
+        "players": [
+            {
+                "steamid": "76561198066693739",
+                "profilestate": 1,
+                "profileurl": "https://steamcommunity.com/id/47357368456783453453/",
+                "commentpermission": 2,
+                "avatarmedium": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5e/5e9bfd10d13d5cd6457f57298eab54058e5b2e6f_medium.jpg",
+                "communityvisibilitystate": 2,
+                "avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5e/5e9bfd10d13d5cd6457f57298eab54058e5b2e6f.jpg",
+                "personaname": "EliGE",
+                "lastlogoff": 1543618054,
+                "avatarfull": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5e/5e9bfd10d13d5cd6457f57298eab54058e5b2e6f_full.jpg",
+                "personastate": 0
+            }
+        ]
+    }
+}
