@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 
 
 BASE_STEAM_ID = 76561197960265728
@@ -71,6 +72,17 @@ def steamid3_to_steamid(steamid):
     A_part = steamid.split(':')[2]
     y_part, x_part = divmod(int(A_part), 2)
     return 'STEAM_0:{}:{}'.format(x_part, y_part)
+
+
+def extract_steamids(the_string):
+    """
+    Return list of steamids extracted from input string
+    """
+    the_string = the_string.replace('STEAM_1', 'STEAM_0')
+    steamids = re.findall(single_regex, the_string)
+    steamids = (SteamID(steamid).steamid64 for steamid in steamids)
+    steamids = OrderedDict.fromkeys(steamids).keys()
+    return list(steamids)[:50]
 
 
 class SteamID:
