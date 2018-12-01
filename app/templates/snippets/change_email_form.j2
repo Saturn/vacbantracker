@@ -3,6 +3,21 @@
   {{ email_form.hidden_tag() }}
 
   <div class="form-group">
+    {% set form_class = "form-control is-invalid" if email_form.current_password.errors else "form-control" %}
+    {{ email_form.current_password.label() }}
+    <div>
+      {{ email_form.current_password(class=form_class, placeholder="Current Password", required=True) }}
+      {% if email_form.current_password.errors %}
+      <div class="invalid-feedback">
+        {% for error in email_form.current_password.errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="form-group">
     {% set form_class = "form-control is-invalid" if email_form.email.errors else "form-control" %}
     {{ email_form.email.label() }}
     <div>
