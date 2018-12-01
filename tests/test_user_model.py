@@ -81,6 +81,23 @@ def test_email_verification_token(setup):
     assert u.validate_email(token) == 'verified'
 
 
+def test_email_verification_without_email(setup):
+    u = User(email=None)
+    db.session.add(u)
+    db.session.commit()
+    with pytest.raises(ValueError):
+        u.generate_email_verification_token()
+
+
+def test_change_email(setup):
+    u = User(email='bob@example.com')
+    db.session.add(u)
+    db.session.commit()
+    new_email = 'bobnew@example.com'
+    u.change_email(new_email)
+    assert u.email == new_email
+
+
 def test_get_or_create_steam_user(setup):
     bans = summaries = None
     with open('tests/data/bans.json', 'r') as f:
