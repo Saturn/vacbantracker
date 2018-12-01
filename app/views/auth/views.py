@@ -54,14 +54,9 @@ def register():
                     password=password)
         db.session.add(user)
         db.session.commit()
-        token = user.generate_email_verification_token()
-        url = url_for('auth.verify_email', token=token, _external=True)
-        email_msg = render_template('email/welcome.txt',
-                                    url=url,
-                                    email=user.email)
-        print(email_msg)
-        flash(('Welcome. An email verification message'
-               'has been sent to {}'.format(email), 'success'))
+        user.send_verification_email()
+        flash(('Welcome. An email verification message '
+               'has been sent to {}'.format(email)), 'success')
         login_user(user)
         return redirect(url_for('main.index'))
     return render_template('register.j2', form=form)
@@ -70,14 +65,8 @@ def register():
 @auth.route('/resend')
 @login_required
 def resend():
-    token = current_user.generate_email_verification_token()
-    url = url_for('auth.verify_email', token=token, _external=True)
-    email = current_user.email
-    email_msg = render_template('email/verify.txt',
-                                url=url,
-                                email=email)
-    print(email_msg)
-    flash('Verification email has been sent to {}'.format(email), 'success')
+    current_user.send_verification_email(email_type='normal')
+    flash('Verification email has been sent to {}'.format(current_user.email), 'success')
     return redirect(url_for('auth.settings_index'))
 
 
@@ -176,27 +165,15 @@ def settings_index():
 
     elif email_form.submit.data and email_form.validate_on_submit():
         new_email = email_form.email.data.lower()
-        token = current_user.generate_email_verification_token(new_email)
-        url = url_for('auth.verify_email', token=token, _external=True)
-        email_msg = render_template('email/change_email.txt', url=url, email=new_email)
-        print(email_msg)
+        current_user.send_verification_email(new_email, email_type='new')
         flash('Email verification has been sent to ' + new_email, 'success')
-        current_user.email = new_email
-        current_user.verified = False
-        db.session.add(current_user)
-        db.session.commit()
+        current_user.change_email(new_email)
 
     elif add_email_form.submit.data and add_email_form.validate_on_submit():
         new_email = add_email_form.email.data.lower()
-        token = current_user.generate_email_verification_token(new_email)
-        url = url_for('auth.verify_email', token=token, _external=True)
-        email_msg = render_template('email/add_email.txt', url=url, email=new_email)
-        print(email_msg)
+        current_user.send_verification_email(new_email, email_type='new')
         flash('Email verification has been sent to ' + new_email, 'success')
-        current_user.email = new_email
-        current_user.verified = False
-        db.session.add(current_user)
-        db.session.commit()
+        current_user.change_email(new_email)
 
     return render_template('settings.j2',
                            pw_form=pw_form,
