@@ -1,5 +1,5 @@
 
-from flask import Blueprint, request, Response, json, render_template
+from flask import Blueprint, request, Response, json, render_template, flash
 
 from flask_login import login_required, current_user
 
@@ -30,6 +30,7 @@ def track():
     if tracked:
         code = 200
         message = 'Succesfully tracked profile.'
+        flash('You are now tracking steamid:{}'.format(steamid))
     else:
         code = 400
         message = 'Something went wrong.'
