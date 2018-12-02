@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const PurifyCSSPlugin = require('purifycss-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 
 module.exports = {
@@ -60,7 +61,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/app.css',
       chunkFilename: '[id].css'
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: './app/frontend/whistle.png',
+        to: 'whistle.png',
+        toType: 'file'
+      },
+    ])
     // ,
     // new PurifyCSSPlugin({
     //   // Give paths to parse for rules. These should be absolute!
