@@ -1,3 +1,5 @@
+import os
+
 import json
 import pytest
 import requests_mock
@@ -7,6 +9,9 @@ from app.models.user import User
 from app import db, create_app
 
 from app.steam.api import PLAYER_BANS_URL, PLAYER_SUMMARIES_URL
+
+
+TEST_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
 @pytest.fixture
@@ -24,9 +29,10 @@ def setup():
 @pytest.fixture
 def steam_mock():
     bans = summaries = None
-    with open('tests/data/bans.json', 'r') as f:
+    data_dir = TEST_PATH + '/data/'
+    with open(data_dir + 'bans.json', 'r') as f:
         bans = json.loads(f.read())
-    with open('tests/data/summaries.json', 'r') as f:
+    with open(data_dir + 'summaries.json', 'r') as f:
         summaries = json.loads(f.read())
 
     mock = requests_mock.mock()
