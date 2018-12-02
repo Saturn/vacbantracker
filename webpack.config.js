@@ -64,9 +64,8 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: './app/frontend/whistle.png',
-        to: 'whistle.png',
-        toType: 'file'
+        from: './app/frontend/*',
+        flatten: true
       },
     ])
     // ,
