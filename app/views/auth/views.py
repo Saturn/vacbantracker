@@ -151,7 +151,6 @@ def settings_index():
     """
     pw_form = ChangePasswordForm(prefix='pw')
     email_form = ChangeEmailForm()
-    add_email_form = AddEmailForm(prefix='add')
 
     if pw_form.submit.data and pw_form.validate_on_submit():
         password = pw_form.password.data
@@ -172,11 +171,15 @@ def settings_index():
         else:
             email_form.current_password.errors.append('Wrong password.')
 
-    elif add_email_form.submit.data and add_email_form.validate_on_submit():
-        new_email = add_email_form.email.data.lower()
-        current_user.send_verification_email(new_email, email_type='new')
-        flash('Email verification has been sent to ' + new_email, 'success')
-        current_user.change_email(new_email)
+    add_email_form = None
+    if current_user.steam_user and not current_user.email:
+        add_email_form = AddEmailForm(prefix='add')
+
+        if add_email_form.submit.data and add_email_form.validate_on_submit():
+            new_email = add_email_form.email.data.lower()
+            current_user.send_verification_email(new_email, email_type='new')
+            flash('Email verification has been sent to ' + new_email, 'success')
+            current_user.change_email(new_email)
 
     return render_template('settings.j2',
                            pw_form=pw_form,
