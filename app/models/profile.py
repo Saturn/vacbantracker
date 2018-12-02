@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from app.extensions import db
 from app.utils import unix_ts_to_dt
 from app.steam.api import get_summaries_and_bans
-from app.steam.id import SteamID
+from app.steam.id import SteamID, VANITY_REGEX
 
 
 class Profile(db.Model):
@@ -44,7 +44,9 @@ class Profile(db.Model):
     num_vac_bans = db.Column(db.Integer)
     vac_banned = db.Column(db.Boolean)
 
-    tracking = db.relationship('Tracking', backref='steam_profile', lazy='dynamic')
+    tracking = db.relationship('Tracking',
+                               backref='steam_profile',
+                               lazy='dynamic')
 
     # mapping of steam api key names to the Profile col names
     col_name_translation = {'CommunityBanned': 'community_banned',
@@ -125,8 +127,7 @@ class Profile(db.Model):
 
         db.session.add_all(data)
         db.session.commit()
-        # slow sorting
-        # data.sort(key=lambda x: list_of_steamids.index(x.steamid))
+
         sort_order = {v: i for i, v in enumerate(list_of_steamids)}
         data.sort(key=lambda x: sort_order[x.steamid])
         return data
@@ -148,6 +149,15 @@ class Profile(db.Model):
                   4: 'Users Only',
                   5: 'Public'}
         return states.get(self.communityvisibilitystate, 'Unknown')
+
+    @property
+    def steamurl(self):
+        return 'https://steamcommunity.com/profiles/{}'.format(self.steamid)
+
+    @property
+    def vanityurl(self):
+        vanity = VANITY_REGEX.match(self.profileurl)
+        return self.profileurl if vanity else None
 
     def __repr__(self):
         return '<Profile steamid={}>'.format(self.steamid)

@@ -4,26 +4,28 @@ from collections import OrderedDict
 
 BASE_STEAM_ID = 76561197960265728
 
-steamid_regexes = {
-    #'vanity': re.compile('steamcommunity.com\/id\/(\w*)'),
+STEAMID_REGEXES = {
     'steamid': re.compile('STEAM_[0|1]:[0|1]:\d+'),
     'steamid64': re.compile('7656119+\d{10}'),
     'steamid3': re.compile('\[U:1:\d+\]')
-    }
+}
 
-single_regex = '|'.join([reg.pattern for reg in steamid_regexes.values()])
+VANITY_REGEX = re.compile('https://steamcommunity.com\/id\/(\w*)/')
+
+
+single_regex = '|'.join([reg.pattern for reg in STEAMID_REGEXES.values()])
 
 
 def is_steamid(steamid):
-    return re.match(steamid_regexes['steamid'], steamid) is not None
+    return re.match(STEAMID_REGEXES['steamid'], steamid) is not None
 
 
 def is_steamid64(steamid):
-    return re.match(steamid_regexes['steamid64'], steamid) is not None
+    return re.match(STEAMID_REGEXES['steamid64'], steamid) is not None
 
 
 def is_steamid3(steamid):
-    return re.match(steamid_regexes['steamid3'], steamid) is not None
+    return re.match(STEAMID_REGEXES['steamid3'], steamid) is not None
 
 
 def is_valid_steamid(steamid):
