@@ -19,3 +19,13 @@ def unix_ts_to_dt(unix_timestamp):
     Convert unix timestamp to datetime object
     """
     return pytz.datetime.datetime.fromtimestamp(unix_timestamp)
+
+
+def pretty_date(dt):
+    """
+    Args:
+        dt Datetime object
+    Returns:
+        Pretty string representation of dt
+    """
+    return dt.strftime('%d %B %Y')

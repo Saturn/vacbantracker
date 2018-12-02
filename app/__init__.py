@@ -2,6 +2,7 @@ from flask import Flask
 
 from app.config import config
 from app.extensions import db, login_manager, bcrypt, openid
+from app.utils import pretty_date
 
 from app.views.main.views import main
 from app.views.auth.views import auth
@@ -26,6 +27,8 @@ def register_extensions(app):
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+
+    app.jinja_env.filters['pretty_date'] = pretty_date
 
     register_extensions(app)
     register_blueprints(app)
