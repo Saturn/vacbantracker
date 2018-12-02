@@ -62,35 +62,33 @@ class Profile(db.Model):
         Certain keys may not appear in api data so must check
         they exist before trying to use them.
         """
-        s = SteamID(kwargs['steamid'])
-        kwargs['steamid_'] = s.steamid
-        kwargs['steamid3'] = s.steamid3
-        translations = Profile.col_name_translation
-        for key in translations:
-            if key in kwargs:
-                kwargs[translations[key]] = kwargs.pop(key)
-        if 'lastlogoff' in kwargs:
-            kwargs['lastlogoff'] = unix_ts_to_dt(kwargs['lastlogoff'])
-        if 'timecreated' in kwargs:
-            kwargs['timecreated'] = unix_ts_to_dt(kwargs['timecreated'])
-        # sometimes profilestate not set
-        if 'profilestate' not in kwargs:
-            kwargs['profilestate'] = 0
-        self.__dict__.update(kwargs)
+        self = Profile.apply_data_to_profile(self, kwargs)
 
     @staticmethod
     def update_profile(profile, new_data):
+        return Profile.apply_data_to_profile(profile, new_data)
+
+    @staticmethod
+    def apply_data_to_profile(the_profile, data):
+        """
+        """
         translations = Profile.col_name_translation
         for key in translations:
-            if key in new_data:
-                new_data[translations[key]] = new_data.pop(key)
-        if 'lastlogoff' in new_data:
-            new_data['lastlogoff'] = unix_ts_to_dt(new_data['lastlogoff'])
-        if 'timecreated' in new_data:
-            new_data['timecreated'] = unix_ts_to_dt(new_data['timecreated'])
-        profile.__dict__.update(new_data)
-        profile.time_updated = datetime.utcnow()
-        return profile
+            if key in data:
+                data[translations[key]] = data.pop(key)
+        if 'lastlogoff' in data:
+            data['lastlogoff'] = unix_ts_to_dt(data['lastlogoff'])
+        if 'timecreated' in data:
+            data['timecreated'] = unix_ts_to_dt(data['timecreated'])
+        if 'profilestate' not in data:
+            data['profilestate'] = 0
+        if not the_profile.steamid_:
+            s = SteamID(data['steamid'])
+            data['steamid_'] = s.steamid
+            data['steamid3'] = s.steamid3
+        the_profile.__dict__.update(data)
+        the_profile.time_updated = datetime.utcnow()
+        return the_profile
 
     @staticmethod
     def get_profiles(list_of_steamids):
