@@ -42,5 +42,9 @@ def search_view():
                     for profile in profiles:
                         if profile.steamid in tracking:
                             profile.tracking_info = tracking[profile.steamid]
+            # if only 1 steamid in search then redirect to profile page
+            if len(profiles) == 1:
+                return redirect(url_for('profile.profile_view',
+                                        steamid=profiles[0].steamid))
 
         return render_template('search.j2', profiles=profiles)
