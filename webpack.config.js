@@ -8,7 +8,7 @@ const PurifyCSSPlugin = require('purifycss-webpack');
 
 module.exports = {
   mode: 'development',
-  entry: ['./app/resources/js/app.js', './app/resources/scss/main.scss'],
+  entry: ['./app/frontend/js/app.js', './app/frontend/scss/main.scss'],
   output: {
     path: path.resolve(__dirname, 'app/static/'),
     filename: 'js/app.js'
