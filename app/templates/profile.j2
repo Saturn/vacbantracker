@@ -5,6 +5,14 @@
 {% block content %}
 
 
+{% macro bool_fmt(value) %}
+{% if value %}
+<span class="text-danger">{{ value }}</span>
+{% else %}
+<span class="text-success">{{ value }}</span>
+{% endif %}
+{% endmacro %}
+
 <div class="row">
   <div class="col-lg-8">
     <h3>Steam Profile</h3>
@@ -55,11 +63,11 @@
               <tbody>
                 <tr>
                   <td>VAC Ban</td>
-                  <td>{{ profile.vac_banned }}</td>
+                  <td>{{ bool_fmt(profile.vac_banned) }}</td>
                 </tr>
                 <tr>
                   <td>Community Ban</td>
-                  <td>{{ profile.community_banned }}</td>
+                  <td>{{ bool_fmt(profile.community_banned) }}</td>
                 </tr>
                 <tr>
                   <td>Profile Privacy</td>
