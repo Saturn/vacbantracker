@@ -163,13 +163,10 @@ def settings_index():
             pw_form.current_password.errors.append('Wrong password')
 
     elif email_form.submit.data and email_form.validate_on_submit():
-        if current_user.verify_pw(email_form.current_password.data):
-            new_email = email_form.email.data.lower()
-            current_user.send_verification_email(new_email, email_type='new')
-            flash('Email verification has been sent to ' + new_email, 'success')
-            current_user.change_email(new_email)
-        else:
-            email_form.current_password.errors.append('Wrong password.')
+        new_email = email_form.email.data.lower()
+        current_user.send_verification_email(new_email, email_type='new')
+        flash('Email verification has been sent to ' + new_email, 'success')
+        current_user.change_email(new_email)
 
     add_email_form = None
     if current_user.steam_user and not current_user.email:

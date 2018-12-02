@@ -61,7 +61,6 @@ class ChangePasswordForm(FlaskForm):
 
 class ChangeEmailForm(FlaskForm):
     email = StringField('New Email Address', validators=[DataRequired(), Email()])
-    current_password = PasswordField('Current Password', validators=password_validation)
     submit = SubmitField('Change Email')
 
     def validate_email(self, field):
