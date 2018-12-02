@@ -96,6 +96,13 @@ Unknown
                   <td>Number of VAC Bans</td>
                   <td>{{ profile.num_vac_bans }}</td>
                 </tr>
+                {% if profile.vac_banned %}
+                <tr>
+                  <td>Days Since Last Ban</td>
+                  <td>{{ profile.days_since_last_ban }}</td>
+                </tr>
+                {% endif %}
+
               </tbody>
             </table>
           </div>
