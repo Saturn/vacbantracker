@@ -28,7 +28,8 @@
       <tbody>
 
         {% for profile in profiles %}
-        <tr data-steamid="{{ profile.steamid }}">
+        <tr data-steamid="{{ profile.steamid }}"
+            data-personaname="{{ profile.personaname }}">
           <th scope="row">{{ loop.index }}</th>
           <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
           <td>{{ profile.steamid }}</td>
@@ -65,5 +66,7 @@
   </div>
   {% endif %}
 </div>
+
+{% include 'snippets/add_modal.j2' %}
 
 {% endblock content %}

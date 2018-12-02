@@ -20,22 +20,24 @@ const clearFlashes = () => {
 };
 
 
-const trackProfile = (e) => {
-  const row = $(e.target).parent().parent()
+const trackProfileModal = (e) => {
+  const row = $(e.target).parent().parent();
+  const personaname = row.data('personaname');
   const steamid = row.data('steamid');
-  const note = '';
-  const data = {steamid: steamid,
-                note: note};
-  $.post('/track', data, () => trackSuccess(row));
+  $('#trackModalTitle').text('Track ' + personaname);
+  const modal = $('#trackModal');
+  $('#track-modal-btn').click((data) => {
+    data = {
+      steamid: steamid,
+      note: $('#track-note').val()
+    }
+    $.post('/track', data, () => window.location.reload());
+  });
+  modal.modal()
 };
 
 
-const trackSuccess = (row) => {
-  console.log(row)
-};
-
-
-$('.track-button').bind("click", trackProfile);
+$('.track-button').bind("click", trackProfileModal);
 
 window.makeFlash = makeFlash;
 window.clearFlashes = clearFlashes;
