@@ -55,13 +55,6 @@ class Profile(db.Model):
                             'VACBanned': 'vac_banned'}
 
     def __init__(self, **kwargs):
-        """
-        Make api data match column names on profile table
-        and convert unix timestamps to datetime objects
-
-        Certain keys may not appear in api data so must check
-        they exist before trying to use them.
-        """
         self = Profile.apply_data_to_profile(self, kwargs)
 
     @staticmethod
@@ -71,6 +64,9 @@ class Profile(db.Model):
     @staticmethod
     def apply_data_to_profile(the_profile, data):
         """
+        Return profile with data applied to columns
+        Apply column translations
+        Some steam profile attributes are optional
         """
         translations = Profile.col_name_translation
         for key in translations:
