@@ -37,7 +37,24 @@ const trackProfileModal = (e) => {
 };
 
 
+const unTrackProfileModal = (e) => {
+  const row = $(e.target).parent().parent();
+  const personaname = row.data('personaname');
+  const steamid = row.data('steamid');
+  $('#unTrackModalTitle').text('Stop tracking ' + personaname + '?');
+  const modal = $('#unTrackModal');
+  $('#unTrack-modal-btn').click((data) => {
+    data = {
+      steamid: steamid
+    }
+    $.post('/untrack', data, () => window.location.reload());
+  });
+  modal.modal()
+};
+
+
 $('.track-button').bind("click", trackProfileModal);
+$('.untrack-button').bind("click", unTrackProfileModal);
 
 window.makeFlash = makeFlash;
 window.clearFlashes = clearFlashes;

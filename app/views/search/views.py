@@ -32,16 +32,16 @@ def search_view():
 
             # if the user is logged in we need to check if they are
             # already tracking any profiles
+            tracking = None
             if current_user.is_authenticated:
-                tracking = current_user.get_tracking(steamids)
-                if tracking:
-                    tracking = {x.steam_profile.steamid: x for x in tracking}
-                    for profile in profiles:
-                        if profile.steamid in tracking:
-                            profile.tracking_info = tracking[profile.steamid]
+                currently_tracking = current_user.get_tracking(steamids)
+                if currently_tracking:
+                    tracking = {x.steam_profile.steamid: x
+                                for x in currently_tracking}
             # if only 1 steamid in search then redirect to profile page
             if len(profiles) == 1:
                 return redirect(url_for('profile.profile_view',
                                         steamid=profiles[0].steamid))
-
-        return render_template('search.j2', profiles=profiles)
+        return render_template('search.j2',
+                               profiles=profiles,
+                               tracking=tracking)

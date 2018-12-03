@@ -41,4 +41,15 @@ def track():
 @profile.route('/untrack', methods=('POST',))
 @login_required
 def untrack():
-    return "This is the untrack view"
+    steamid = request.form.get('steamid')
+    if is_steamid64(str(steamid)):
+        untracked_profile = current_user.untrack_profile(steamid)
+    if untracked_profile:
+        code = 200
+        message = 'Succesfuly untracked profile.'
+        flash('You are no longer tracking steamid:{}'.format(steamid))
+    else:
+        code = 400
+        message = 'Something went wrong.'
+    data = json.dumps(dict(message=message, code=code))
+    return Response(data, status=code, mimetype='application/json')

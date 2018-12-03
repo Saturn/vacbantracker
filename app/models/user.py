@@ -122,6 +122,20 @@ class User(db.Model, UserMixin):
         db.session.commit()
         return True
 
+    def untrack_profile(self, steamid):
+        """
+        Deletes tracking profile for steamid if user
+        is currently tracking that profile.
+        """
+        tracking = self.tracking.join(Profile)\
+                                .filter(Profile.steamid == steamid)\
+                                .first()
+        if tracking:
+            db.session.delete(tracking)
+            db.session.commit()
+            return True
+        return False
+
     def get_tracking(self, steamids=None):
         """
         Return list of tracking profiles user is tracking.
