@@ -32,7 +32,7 @@ def track():
     note = request.form.get('note')
     tracked = None
     if is_steamid64(str(steamid)):
-        tracked = current_user.track_profile(Profile.get(steamid), note)
+        tracked = current_user.track_profile(steamid, note)
 
     if tracked:
         code = 200

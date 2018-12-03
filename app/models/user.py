@@ -89,7 +89,7 @@ class User(db.Model, UserMixin):
             return user
         return steam_user
 
-    def track_profile(self, profile, note=None):
+    def track_profile(self, steamid, note=None):
         """
         Add profile for User to 'Track'
         Args:
@@ -98,6 +98,7 @@ class User(db.Model, UserMixin):
         Returns:
             True if user successfully tracks profile else False
         """
+        profile = Profile.get(steamid)
         # Make sure user is not already tracking profile or
         if self.steam_oid:  # user is a steam openid user
             if profile.steamid == self.steam_oid.profile.steamid:
