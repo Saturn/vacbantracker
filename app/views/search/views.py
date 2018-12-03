@@ -33,10 +33,7 @@ def search_view():
             # if the user is logged in we need to check if they are
             # already tracking any profiles
             if current_user.is_authenticated:
-                user_tracking = current_user.tracking
-                tracking = user_tracking.join(Profile)\
-                                        .filter(Profile.steamid.in_(steamids))\
-                                        .all()
+                tracking = current_user.get_tracking(steamids)
                 if tracking:
                     tracking = {x.steam_profile.steamid: x for x in tracking}
                     for profile in profiles:

@@ -122,6 +122,17 @@ class User(db.Model, UserMixin):
         db.session.commit()
         return True
 
+    def get_tracking(self, steamids=None):
+        """
+        Return list of tracking profiles user is tracking.
+        If steamids is None then will return all user tracking.
+        """
+        if steamids:
+            return self.tracking.join(Profile)\
+                                .filter(Profile.steamid.in_(steamids))\
+                                .all()
+        return self.tracking.all()
+
     def send_verification_email(self, email=None, email_type='welcome'):
         """
         Sends a verification email
