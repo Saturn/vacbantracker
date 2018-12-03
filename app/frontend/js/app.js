@@ -41,6 +41,9 @@ const unTrackProfileModal = (e) => {
   const row = $(e.target).parent().parent();
   const personaname = row.data('personaname');
   const steamid = row.data('steamid');
+  let note = row.data('note');
+  note = note === '' ? 'None' : note;
+  $('#untrack-note').text(note);
   $('#unTrackModalTitle').text('Stop tracking ' + personaname + '?');
   const modal = $('#unTrackModal');
   $('#unTrack-modal-btn').click((data) => {

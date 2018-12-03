@@ -29,7 +29,8 @@
 
         {% for profile in profiles %}
         <tr data-steamid="{{ profile.steamid }}"
-            data-personaname="{{ profile.personaname }}">
+            data-personaname="{{ profile.personaname }}"
+            data-note="{{ '' if profile.steamid not in tracking else tracking[profile.steamid].note }}">
           <th scope="row">{{ loop.index }}</th>
           <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
           <td>{{ profile.steamid }}</td>
