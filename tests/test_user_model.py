@@ -28,20 +28,20 @@ def setup():
 
 @pytest.fixture
 def steam_mock():
-    bans = summaries = None
+    ban = summary = None
     data_dir = TEST_PATH + '/data/'
-    with open(data_dir + 'bans.json', 'r') as f:
-        bans = json.loads(f.read())
-    with open(data_dir + 'summaries.json', 'r') as f:
-        summaries = json.loads(f.read())
+    with open(data_dir + 'ban.json', 'r') as f:
+        ban = json.loads(f.read())
+    with open(data_dir + 'summary.json', 'r') as f:
+        summary = json.loads(f.read())
 
     mock = requests_mock.mock()
     mock.register_uri('GET',
                       PLAYER_BANS_URL,
-                      json=bans)
+                      json=ban)
     mock.register_uri('GET',
                       PLAYER_SUMMARIES_URL,
-                      json=summaries)
+                      json=summary)
     return mock
 
 

@@ -1,13 +1,47 @@
-{
-    "players": [
-        {
-            "CommunityBanned": false,
-            "NumberOfGameBans": 0,
-            "VACBanned": false,
-            "NumberOfVACBans": 0,
-            "EconomyBan": "none",
-            "SteamId": "76561198066693739",
-            "DaysSinceLastBan": 0
-        }
-    ]
-}
+[
+    {
+        "DaysSinceLastBan": 0,
+        "VACBanned": false,
+        "NumberOfGameBans": 0,
+        "CommunityBanned": false,
+        "NumberOfVACBans": 0,
+        "EconomyBan": "none",
+        "steamid": "76561197987713664"
+    },
+    {
+        "DaysSinceLastBan": 0,
+        "VACBanned": false,
+        "NumberOfGameBans": 0,
+        "CommunityBanned": false,
+        "NumberOfVACBans": 0,
+        "EconomyBan": "none",
+        "steamid": "76561198034202275"
+    },
+    {
+        "DaysSinceLastBan": 0,
+        "VACBanned": false,
+        "NumberOfGameBans": 0,
+        "CommunityBanned": false,
+        "NumberOfVACBans": 0,
+        "EconomyBan": "none",
+        "steamid": "76561197982036918"
+    },
+    {
+        "DaysSinceLastBan": 0,
+        "VACBanned": false,
+        "NumberOfGameBans": 0,
+        "CommunityBanned": false,
+        "NumberOfVACBans": 0,
+        "EconomyBan": "none",
+        "steamid": "76561197960359452"
+    },
+    {
+        "DaysSinceLastBan": 0,
+        "VACBanned": false,
+        "NumberOfGameBans": 0,
+        "CommunityBanned": false,
+        "NumberOfVACBans": 0,
+        "EconomyBan": "none",
+        "steamid": "76561197988627193"
+    }
+]
