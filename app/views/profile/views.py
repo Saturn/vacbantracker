@@ -13,9 +13,16 @@ profile = Blueprint('profile', __name__)
 @profile.route('/id/<steamid>')
 def profile_view(steamid):
     profile = None
+    tracking = None
+    if current_user.is_authenticated:
+        tracking = current_user.get_tracking([steamid])
+        if tracking:
+            tracking = tracking[0]  # user.get_tracking returns list
     if is_steamid64(str(steamid)):
         profile = Profile.get_profiles([steamid])[0]
-    return render_template('profile.j2', profile=profile)
+    return render_template('profile.j2',
+                           profile=profile,
+                           tracking=tracking)
 
 
 @profile.route('/track', methods=('POST',))

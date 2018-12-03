@@ -108,8 +108,9 @@ Unknown
           </div>
         </div>
 
-
-        <a href="#" class="btn btn-primary">Do something</a>
+        {% if tracking %}
+          <button class="btn btn-danger">Untrack Profile</button>
+        {% endif %}
       </div>
     </div>
 
@@ -118,8 +119,7 @@ Unknown
   </div>
 
 
-  {% if current_user.is_authenticated %}
-
+  {% if not tracking %}
   <div class="col-lg-3">
     <div class="card">
       <div class="card-header">
@@ -140,7 +140,6 @@ Unknown
       </div>
     </div>
   </div>
-
   {% endif %}
 
 
