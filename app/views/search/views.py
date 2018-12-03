@@ -25,6 +25,7 @@ def search_view():
     if request.method == 'GET':
         steamids = request.args.get('steamids')
         profiles = None
+        tracking = {}
         if steamids:
             steamids = steamids.split(',')
             steamids = list(filter(is_steamid64, steamids))
@@ -32,7 +33,6 @@ def search_view():
 
             # if the user is logged in we need to check if they are
             # already tracking any profiles
-            tracking = None
             if current_user.is_authenticated:
                 currently_tracking = current_user.get_tracking(steamids)
                 if currently_tracking:
