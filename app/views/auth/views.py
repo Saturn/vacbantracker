@@ -25,10 +25,9 @@ def login():
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        email = form.email.data.lower()
-        password = form.password.data
-        user = User.query.filter_by(email=email).first()
-        if user and user.verify_pw(password) and not user.steam_user:
+        user = User.query.filter_by(email=form.email.data.lower())\
+                         .first()
+        if user and not user.steam_user:
             login_user(user, form.remember.data)
             return redirect(url_for('main.index'))
         else:

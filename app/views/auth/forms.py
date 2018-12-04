@@ -19,6 +19,13 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+    def validate_password(self, field):
+        user = User.query.filter_by(email=self.email.data.lower())\
+                         .first()
+        if user:
+            if not user.verify_pw(field.data):
+                raise ValidationError('Incorrect password.')
+
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
