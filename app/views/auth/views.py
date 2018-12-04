@@ -149,17 +149,15 @@ def settings_index():
     set one before.
     """
     pw_form = ChangePasswordForm(prefix='pw')
+    pw_form.current_user = current_user  # so we can validate users password
     email_form = ChangeEmailForm()
 
+
     if pw_form.submit.data and pw_form.validate_on_submit():
-        password = pw_form.password.data
-        if current_user.verify_pw(pw_form.current_password.data):
-            current_user.password = password
-            db.session.add(current_user)
-            db.session.commit()
-            flash('Successfully changed password.', 'success')
-        else:
-            pw_form.current_password.errors.append('Wrong password')
+        current_user.password = pw_form.password.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Successfully changed password.', 'success')
 
     elif email_form.submit.data and email_form.validate_on_submit():
         new_email = email_form.email.data.lower()

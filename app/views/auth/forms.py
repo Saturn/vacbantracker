@@ -65,6 +65,10 @@ class ChangePasswordForm(FlaskForm):
     password2 = PasswordField('Confirm New Password', validators=password1_validation)
     submit = SubmitField('Change Password')
 
+    def validate_current_password(self, field):
+        if not self.current_user.verify_pw(field.data):
+            raise ValidationError('Incorrect password.')
+
 
 class ChangeEmailForm(FlaskForm):
     email = StringField('New Email Address', validators=[DataRequired(), Email()])
