@@ -152,7 +152,6 @@ def settings_index():
     pw_form.current_user = current_user  # so we can validate users password
     email_form = ChangeEmailForm()
 
-
     if pw_form.submit.data and pw_form.validate_on_submit():
         current_user.password = pw_form.password.data
         db.session.add(current_user)
@@ -165,6 +164,7 @@ def settings_index():
         flash('Email verification has been sent to ' + new_email, 'success')
         current_user.change_email(new_email)
 
+    # For Steam OpenID users who have an account but no email attached yet.
     add_email_form = None
     if current_user.steam_user and not current_user.email:
         add_email_form = AddEmailForm(prefix='add')
