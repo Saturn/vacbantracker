@@ -11,6 +11,7 @@ For more information about VAC (Valve Anti Cheat) click [here](https://support.s
 - [x] Ability to add profiles to tracking
 - [ ] Tracking page to show currently tracked profiles
     - [ ] Ability to sort and search tracked profiles
+- [ ] Create form macros for better reuse
 - [ ] Add navigation bar links
 - [ ] More custom styling
 - [ ] Pages for about, privacy and feedback sections
