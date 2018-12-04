@@ -8,7 +8,7 @@ For more information about VAC (Valve Anti Cheat) click [here](https://support.s
 
 #### TODO
 - [x] User account settings page
-- [ ] Ability to add profiles to tracking
+- [x] Ability to add profiles to tracking
 - [ ] Tracking page to show currently tracked profiles
     - [ ] Ability to sort and search tracked profiles
 - [ ] Add navigation bar links
