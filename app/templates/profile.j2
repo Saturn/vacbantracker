@@ -114,9 +114,32 @@ Unknown
       </div>
     </div>
 
-
-
   </div>
+</div>
+
+  {% if tracking %}
+  <div class="row">
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-header">
+          Tracking Information
+        </div>
+        <div class="card-body">
+          <p class="card-text">You are currently tracking this profile.</p>
+          <ul>
+            <li>{{ tracking.x_personaname }}</li>
+            <li>{{ tracking.x_vac_banned }}</li>
+            <li>{{ tracking.x_days_since_last_ban }}</li>
+            <li>{{ tracking.x_num_game_bans }}</li>
+            <li>{{ tracking.x_economy_ban }}</li>
+            <li>{{ tracking.x_community_banned }}</li>
+          </ul>
+          <p class="card-text">You started tracking on {{ tracking.timetracked | pretty_date }}.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
 
   {% if not tracking %}
