@@ -21,9 +21,9 @@ const clearFlashes = () => {
 
 
 const trackProfileModal = (e) => {
-  const row = $(e.target).parent().parent();
-  const personaname = row.data('personaname');
-  const steamid = row.data('steamid');
+  const button = $(e.target);
+  const personaname = button.data('personaname');
+  const steamid = button.data('steamid');
   $('#trackModalTitle').text('Track ' + personaname);
   const modal = $('#trackModal');
   $('#track-modal-btn').click((data) => {
@@ -38,10 +38,10 @@ const trackProfileModal = (e) => {
 
 
 const unTrackProfileModal = (e) => {
-  const row = $(e.target).parent().parent();
-  const personaname = row.data('personaname');
-  const steamid = row.data('steamid');
-  let note = row.data('note');
+  const button = $(e.target)
+  const personaname = button.data('personaname');
+  const steamid = button.data('steamid');
+  let note = button.data('note');
   note = note === '' ? 'None' : note;
   $('#untrack-note').text(note);
   $('#unTrackModalTitle').text('Stop tracking ' + personaname + '?');
