@@ -70,8 +70,9 @@ def get_summaries_and_bans(steamids):
     merged = []
     for summary in summaries:
         for ban in bans:
-            if summary['steamid'] == ban['steamid']:
-                merged.append({**summary, **ban})
+            if summary and ban:
+                if summary['steamid'] == ban['steamid']:
+                    merged.append({**summary, **ban})
     return merged
     # faster version?
     # from operator import itemgetter
