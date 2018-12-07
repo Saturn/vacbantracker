@@ -1,0 +1,5 @@
+{% macro profile_data_attrs(the_profile) %}
+data-steamid="{{ the_profile.steamid }}"
+data-personaname="{{ the_profile.personaname }}"
+data-note="{{ '' if the_profile.steamid not in tracking else tracking[the_profile.steamid].note }}"
+{% endmacro %}

@@ -20,20 +20,45 @@ const clearFlashes = () => {
 };
 
 
+const trackProfile = (steamid, note) => {
+  $.post('/track',
+         {steamid: steamid,
+          note: note},
+         () => window.location.reload());
+};
+
+
+const untrackProfile = (steamid) => {
+  $.post('/untrack',
+         {steamid: steamid},
+         () => window.location.reload());
+};
+
+
+const trackProfileButton = (e) => {
+  const button = $(e.target);
+  const steamid = button.data('steamid');
+  const note = $('.tracking-note').text();
+  trackProfile(steamid, note);
+};
+
+
+const untrackProfileButton = (e) => {
+  const button = $(e.target);
+  const steamid = button.data('steamid');
+  untrackProfile(steamid);
+};
+
+
 const trackProfileModal = (e) => {
   const button = $(e.target);
   const personaname = button.data('personaname');
   const steamid = button.data('steamid');
   $('#trackModalTitle').text('Track ' + personaname);
   const modal = $('#trackModal');
-  $('#track-modal-btn').click((data) => {
-    data = {
-      steamid: steamid,
-      note: $('#track-note').val()
-    }
-    $.post('/track', data, () => window.location.reload());
-  });
-  modal.modal()
+  const note = $('#track-note').val();
+  $('#track-modal-btn').click(() => trackProfile(steamid, note));
+  modal.modal();
 };
 
 
@@ -46,18 +71,15 @@ const unTrackProfileModal = (e) => {
   $('#untrack-note').text(note);
   $('#unTrackModalTitle').text('Stop tracking ' + personaname + '?');
   const modal = $('#unTrackModal');
-  $('#unTrack-modal-btn').click((data) => {
-    data = {
-      steamid: steamid
-    }
-    $.post('/untrack', data, () => window.location.reload());
-  });
+  $('#unTrack-modal-btn').click(() => untrackProfile(steamid));
   modal.modal()
 };
 
 
 $('.track-button').bind("click", trackProfileModal);
 $('.untrack-button').bind("click", unTrackProfileModal);
+$('.track-button-profile').bind("click", trackProfileButton);
+$('.untrack-button-profile').bind("click", untrackProfileButton);
 
 window.makeFlash = makeFlash;
 window.clearFlashes = clearFlashes;

@@ -4,6 +4,7 @@
 
 {% block content %}
 
+{% import 'macros/data_attrs.j2' as data_attrs_macro %}
 
 <div class="row">
   <div class="col">
@@ -29,9 +30,7 @@
 
       {% for profile in profiles %}
         {% set profile_attrs %}
-        data-steamid="{{ profile.steamid }}"
-        data-personaname="{{ profile.personaname }}"
-        data-note="{{ '' if profile.steamid not in tracking else tracking[profile.steamid].note }}"
+        {{ data_attrs_macro.profile_data_attrs(profile) }} 
         {% endset %}
 
         <tr>
