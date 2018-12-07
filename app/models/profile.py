@@ -70,10 +70,7 @@ class Profile(db.Model):
         Apply column translations
         Some steam profile attributes are optional
         """
-        translations = Profile.col_name_translation
-        for key in translations:
-            if key in data:
-                data[translations[key]] = data.pop(key)
+        data = Profile.apply_col_translations(data)
         if 'lastlogoff' in data:
             data['lastlogoff'] = unix_ts_to_dt(data['lastlogoff'])
         if 'timecreated' in data:
@@ -87,6 +84,20 @@ class Profile(db.Model):
         the_profile.__dict__.update(data)
         the_profile.time_updated = datetime.utcnow()
         return the_profile
+
+    @staticmethod
+    def apply_col_translations(data):
+        """
+        Args:
+            data Steam API data
+        Returns:
+            The Steam API data with key names matching Profile model
+        """
+        translations = Profile.col_name_translation
+        for key in translations:
+            if key in data:
+                data[translations[key]] = data.pop(key)
+        return data
 
     @staticmethod
     def get_profiles(list_of_steamids):
