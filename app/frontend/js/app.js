@@ -9,9 +9,9 @@ const makeFlash = (message, category) => {
   $(".flashes").append(`<div class="alert alert-${category} alert-dismissible fade show" role="alert">
     ${message}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+    <span aria-hidden="true">&times;</span>
     </button>
-  </div>`);
+    </div>`);
 };
 
 
@@ -21,17 +21,15 @@ const clearFlashes = () => {
 
 
 const trackProfile = (steamid, note) => {
-  $.post('/track',
-         {steamid: steamid,
-          note: note},
-         () => window.location.reload());
+  return $.post('/track',
+    {steamid: steamid,
+     note: note});
 };
 
 
 const untrackProfile = (steamid) => {
-  $.post('/untrack',
-         {steamid: steamid},
-         () => window.location.reload());
+  return $.post('/untrack',
+   {steamid: steamid});
 };
 
 
@@ -51,27 +49,54 @@ const untrackProfileButton = (e) => {
 
 
 const trackProfileModal = (e) => {
-  const button = $(e.target);
-  const personaname = button.data('personaname');
-  const steamid = button.data('steamid');
+  const data_div = $(e.target).parent();
+  const personaname = data_div.data('personaname');
+  const steamid = data_div.data('steamid');
+  const getNote = () => $('#track-note').val();
+
   $('#trackModalTitle').text('Track ' + personaname);
   const modal = $('#trackModal');
-  const note = $('#track-note').val();
-  $('#track-modal-btn').click(() => trackProfile(steamid, note));
+
+  $('#track-modal-btn').click(() => {
+    modal.modal('hide');
+    const note = getNote();
+    trackProfile(steamid, note).then((data) => {
+      if (data.code === 200){
+        data_div.data('note', note);
+        data_div.children('.track-button').addClass('d-none');
+        data_div.children('.untrack-button').removeClass('d-none');
+      }
+      else {
+        makeFlash('Something went wrong', 'danger');
+      }
+    });
+  });
   modal.modal();
 };
 
 
 const unTrackProfileModal = (e) => {
-  const button = $(e.target)
-  const personaname = button.data('personaname');
-  const steamid = button.data('steamid');
-  let note = button.data('note');
+  const data_div = $(e.target).parent();
+  const personaname = data_div.data('personaname');
+  const steamid = data_div.data('steamid');
+  let note = data_div.data('note');
   note = note === '' ? 'None' : note;
   $('#untrack-note').text(note);
   $('#unTrackModalTitle').text('Stop tracking ' + personaname + '?');
   const modal = $('#unTrackModal');
-  $('#unTrack-modal-btn').click(() => untrackProfile(steamid));
+  $('#unTrack-modal-btn').click(() => {
+    modal.modal('hide');
+    untrackProfile(steamid).then((data) => {
+      if (data.code === 200){
+        data_div.data('note', '');
+        data_div.children('.track-button').removeClass('d-none');
+        data_div.children('.untrack-button').addClass('d-none');
+      }
+      else {
+        makeFlash('Something went wrong', 'danger');
+      }
+    });
+  });
   modal.modal()
 };
 
