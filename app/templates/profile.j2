@@ -35,7 +35,7 @@ data-note="{{ '' if not tracking else tracking.note }}"
 </div>
 
 <div class="row">
-  <div class="col-lg-9">
+  <div class="col-lg-9 pb-4">
 
     <div class="card">
       <div class="card-body">
@@ -132,7 +132,7 @@ data-note="{{ '' if not tracking else tracking.note }}"
         <p class="card-text">Track this profile in order to get notifications about future bans.</p>
 
           <div class="form-group">
-            <textarea class="tracking-note" name="note" rows=5 placeholder="Optional note to attach"></textarea>
+            <textarea id="profile-tracking-note" name="note" rows=5 placeholder="Optional note to attach"></textarea>
           </div>
           <div class="form-group text-center">
             <button {{ profile_attrs }} class="btn btn-lg btn-success track-button-profile" type="submit">Track</button>

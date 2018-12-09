@@ -36,15 +36,19 @@ const untrackProfile = (steamid) => {
 const trackProfileButton = (e) => {
   const button = $(e.target);
   const steamid = button.data('steamid');
-  const note = $('.tracking-note').text();
-  trackProfile(steamid, note);
+  const note = $('#profile-tracking-note').val();
+  trackProfile(steamid, note).then(() => {
+    window.location.reload();
+  });
 };
 
 
 const untrackProfileButton = (e) => {
   const button = $(e.target);
   const steamid = button.data('steamid');
-  untrackProfile(steamid);
+  untrackProfile(steamid).then(() => {
+    window.location.reload();
+  });
 };
 
 
@@ -107,7 +111,7 @@ const untrackProfileModal = (e) => {
 
 $('.track-button').bind("click", trackProfileModal);
 $('.untrack-button').bind("click", untrackProfileModal);
-$('.track-button-profile').bind("click", trackProfileButton);
+$('.track-button-profile').bind("click", (e) => trackProfileButton(e));
 $('.untrack-button-profile').bind("click", untrackProfileButton);
 
 window.makeFlash = makeFlash;
