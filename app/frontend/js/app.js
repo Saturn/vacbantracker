@@ -52,11 +52,13 @@ const trackProfileModal = (e) => {
   const data_div = $(e.target).parent();
   const personaname = data_div.data('personaname');
   const steamid = data_div.data('steamid');
+  $('#track-note').val('');
   const getNote = () => $('#track-note').val();
 
   $('#trackModalTitle').text('Track ' + personaname);
   const modal = $('#trackModal');
 
+  $('#track-modal-btn').unbind('click');
   $('#track-modal-btn').click(() => {
     modal.modal('hide');
     const note = getNote();
@@ -84,6 +86,8 @@ const untrackProfileModal = (e) => {
   $('#untrack-note').text(note);
   $('#untrackModalTitle').text('Stop tracking ' + personaname + '?');
   const modal = $('#untrackModal');
+
+  $('#untrack-modal-btn').unbind('click');
   $('#untrack-modal-btn').click(() => {
     modal.modal('hide');
     untrackProfile(steamid).then((data) => {
