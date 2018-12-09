@@ -75,16 +75,16 @@ const trackProfileModal = (e) => {
 };
 
 
-const unTrackProfileModal = (e) => {
+const untrackProfileModal = (e) => {
   const data_div = $(e.target).parent();
   const personaname = data_div.data('personaname');
   const steamid = data_div.data('steamid');
   let note = data_div.data('note');
   note = note === '' ? 'None' : note;
   $('#untrack-note').text(note);
-  $('#unTrackModalTitle').text('Stop tracking ' + personaname + '?');
-  const modal = $('#unTrackModal');
-  $('#unTrack-modal-btn').click(() => {
+  $('#untrackModalTitle').text('Stop tracking ' + personaname + '?');
+  const modal = $('#untrackModal');
+  $('#untrack-modal-btn').click(() => {
     modal.modal('hide');
     untrackProfile(steamid).then((data) => {
       if (data.code === 200){
@@ -102,7 +102,7 @@ const unTrackProfileModal = (e) => {
 
 
 $('.track-button').bind("click", trackProfileModal);
-$('.untrack-button').bind("click", unTrackProfileModal);
+$('.untrack-button').bind("click", untrackProfileModal);
 $('.track-button-profile').bind("click", trackProfileButton);
 $('.untrack-button-profile').bind("click", untrackProfileButton);
 
