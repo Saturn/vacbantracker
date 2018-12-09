@@ -17,4 +17,4 @@ class SteamOID(db.Model):
         return self.profile.steamid
 
     def __repr__(self):
-        return '<SteamOID {} steamid:{}>'.format(self.personaname, self.steamid)
+        return '<SteamOID {} steamid: {}>'.format(self.personaname, self.steamid)

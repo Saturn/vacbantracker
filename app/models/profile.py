@@ -171,4 +171,4 @@ class Profile(db.Model):
         return self.profileurl if vanity else None
 
     def __repr__(self):
-        return '<Profile steamid={}>'.format(self.steamid)
+        return '<Profile steamid: {}>'.format(self.steamid)

@@ -24,5 +24,5 @@ class Tracking(db.Model):
     profile = db.relationship('Profile', uselist=False)
 
     def __repr__(self):
-        return '<Tracking steamid={} user={}>'.format(self.profile.steamid,
+        return '<Tracking steamid: {} user: {}>'.format(self.profile.steamid,
                                                       self.user.id)
