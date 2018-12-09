@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% import 'macros/data_attrs.j2' as data_attrs_macro %}
+{% import 'macros/data_attrs.j2' as data_attrs_macro with context %}
 
 {% macro bool_fmt(value) %}
 {% if value %}
