@@ -4,7 +4,6 @@
 
 {% block content %}
 
-{% import 'macros/data_attrs.j2' as data_attrs_macro with context %}
 
 {% macro bool_fmt(value) %}
 {% if value %}
@@ -23,10 +22,10 @@ Unknown
 {% endmacro %}
 
 {% set profile_attrs %}
-{{ data_attrs_macro.profile_data_attrs(profile) }}
+data-steamid="{{ profile.steamid }}"
+data-personaname="{{ profile.personaname }}"
+data-note="{{ '' if not tracking else tracking.note }}"
 {% endset %}
-
-
 
 <div class="row">
   <div class="col-lg-8">
