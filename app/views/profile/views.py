@@ -58,3 +58,9 @@ def untrack():
         message = 'Something went wrong.'
     data = json.dumps(dict(message=message, code=code))
     return Response(data, status=code, mimetype='application/json')
+
+
+@profile.route('/tracking')
+@login_required
+def tracking():
+    return render_template('tracking.j2')
