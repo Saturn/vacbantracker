@@ -1,3 +1,5 @@
+from sqlalchemy import UniqueConstraint
+
 from app.extensions import db
 
 
@@ -7,6 +9,8 @@ class SteamOID(db.Model):
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
 
     profile = db.relationship('Profile', uselist=False)
+
+    __table_args__ = (UniqueConstraint('user_id', 'profile_id'),)
 
     @property
     def personaname(self):
