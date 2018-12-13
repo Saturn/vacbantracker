@@ -140,6 +140,18 @@ def test_get_steam_user(setup, steam_mock):
         assert User.get_or_create_steam_user(steamid) is u
 
 
+def test_is_steam_user(setup, steam_mock):
+    with steam_mock:
+        steamid = '76561198066693739'
+        u = User.get_or_create_steam_user(steamid)
+        assert u.steam_user
+
+
+def test_is_not_steam_user(setup):
+    u = User(email='bob@example.com')
+    assert not u.steam_user
+
+
 def test_user_track_profile(setup, steam_mock):
     u = User()
     db.session.add(u)
