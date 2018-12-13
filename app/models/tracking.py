@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from sqlalchemy import UniqueConstraint
+
 from app.extensions import db
 
 
@@ -23,6 +25,8 @@ class Tracking(db.Model):
 
     profile = db.relationship('Profile', uselist=False)
 
+    __table_args__ = (UniqueConstraint('profile_id', 'user_id'),)
+
     def __repr__(self):
         return '<Tracking steamid: {} user: {}>'.format(self.profile.steamid,
-                                                      self.user.id)
+                                                        self.user.id)

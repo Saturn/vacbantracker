@@ -4,6 +4,7 @@ from flask import current_app, url_for, render_template
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
+from sqlalchemy.exc import IntegrityError
 
 from app.extensions import db, bcrypt
 from app.steam.api import get_summaries_and_bans
@@ -99,14 +100,10 @@ class User(db.Model, UserMixin):
             True if user successfully tracks profile else False
         """
         profile = Profile.get(steamid)
-        # Make sure user is not already tracking profile or
-        if self.steam_oid:  # user is a steam openid user
+
+        if self.steam_oid:
             if profile.steamid == self.steam_oid.profile.steamid:
                 return False
-        # that user is not trying to track themselves
-        tracking = self.tracking.filter_by(profile=profile).first()
-        if tracking:
-            return False
 
         profile_data = dict(x_personaname=profile.personaname,
                             x_community_banned=profile.community_banned,
@@ -118,10 +115,13 @@ class User(db.Model, UserMixin):
         tracking = Tracking(note=note,
                             profile=profile,
                             **profile_data)
-        self.tracking.append(tracking)
-        db.session.add(self)
-        db.session.commit()
-        return True
+        try:
+            self.tracking.append(tracking)
+            db.session.add(self)
+            db.session.commit()
+            return True
+        except IntegrityError:
+            return False
 
     def untrack_profile(self, steamid):
         """
