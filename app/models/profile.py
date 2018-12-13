@@ -8,7 +8,7 @@ from app.steam.id import SteamID, VANITY_REGEX
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    steamid = db.Column(db.String(255), nullable=False)
+    steamid = db.Column(db.String(255), nullable=False, unique=True)
     steamid_ = db.Column(db.String(255), nullable=False)
     steamid3 = db.Column(db.String(255), nullable=False)
     communityvisibilitystate = db.Column(db.Integer, nullable=False)
