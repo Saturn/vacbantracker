@@ -175,6 +175,17 @@ def test_user_untrack_profile(setup, steam_mock):
     assert is_untracked
 
 
+def test_user_untrack_profile_not_tracking(setup, steam_mock):
+    u = User()
+    db.session.add(u)
+    db.session.commit()
+    with steam_mock:
+        steamid = '76561198066693739'
+        Profile.get_profiles([steamid])
+        is_untracked = u.untrack_profile(steamid)
+    assert not is_untracked
+
+
 def test_steam_user_tracking_themselves(setup, steam_mock):
     with steam_mock:
         steamid = '76561198066693739'
