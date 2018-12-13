@@ -164,6 +164,13 @@ def test_user_track_profile(setup, steam_mock):
     assert is_tracked
 
 
+def test_steam_user_tracking_themselves(setup, steam_mock):
+    with steam_mock:
+        steamid = '76561198066693739'
+        u = User.get_or_create_steam_user(steamid)
+        assert not u.track_profile(steamid)
+
+
 def test_user_already_tracking_profile(setup, steam_mock):
     u = User()
     db.session.add(u)
