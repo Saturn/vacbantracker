@@ -39,7 +39,7 @@
           <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
           <td>{{ profile.steamid }}</td>
           <td class="search-track-buttons">
-            {% if current_user.is_authenticated %}
+            {% if is_authenticated() %}
               <div {{ profile_attrs }}>
                 {% set t_btn_disp = "d-none" if profile.steamid in tracking else "" %}
                 {% set ut_btn_disp = "d-none" if not t_btn_disp else "" %}

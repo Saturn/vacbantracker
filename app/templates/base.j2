@@ -36,12 +36,12 @@
           </li>
         </ul>
         <ul class="navbar-nav">
-          {% if current_user.is_authenticated %}
+          {% if is_authenticated() %}
           <li class="nav-item">
             <a class="nav-link" href="/tracking">My Tracking</a>
           </li>
           {% endif %}
-          {% if current_user.is_authenticated %}
+          {% if is_authenticated() %}
           {% set drop_label = 'My Account' if current_user.steam_user == False else current_user.steam_oid.profile.personaname %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ drop_label }}</a>

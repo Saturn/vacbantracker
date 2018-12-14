@@ -2,7 +2,7 @@ from flask import Flask
 
 from app.config import config
 from app.extensions import db, login_manager, bcrypt, openid
-from app.utils import pretty_date
+from app.utils import pretty_date, is_authenticated
 
 from app.views.main.views import main
 from app.views.auth.views import auth
@@ -29,6 +29,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
 
     app.jinja_env.filters['pretty_date'] = pretty_date
+    app.jinja_env.globals['is_authenticated'] = is_authenticated
 
     register_extensions(app)
     register_blueprints(app)

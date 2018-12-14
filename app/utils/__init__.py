@@ -1,4 +1,5 @@
 import pytz
+from flask_login import current_user
 
 
 def convert_pacific_to_utc(the_date):
@@ -29,3 +30,7 @@ def pretty_date(dt):
         Pretty string representation of dt
     """
     return dt.strftime('%d %B %Y')
+
+
+def is_authenticated():
+    return current_user.is_authenticated
