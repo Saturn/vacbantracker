@@ -172,13 +172,14 @@ class User(db.Model, UserMixin):
             data = get_serializer().loads(token)
             user_id = data.get('user_id')
             user = User.query.get(user_id)
-            email = data.get('email')
-            if email:
-                user.email = email
-                user.verified = True
-                db.session.add(user)
-                db.session.commit()
-                return 'verified'
+            if user:
+                email = data.get('email')
+                if email:
+                    user.email = email
+                    user.verified = True
+                    db.session.add(user)
+                    db.session.commit()
+                    return 'verified'
         except (BadSignature, SignatureExpired) as e:
             if isinstance(e, BadSignature):
                 return 'bad_signature'

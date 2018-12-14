@@ -1,16 +1,15 @@
 import os
-
 import json
+import time
+from unittest.mock import patch
+
 import pytest
 import requests_mock
 
-
+from app import db, create_app
 from app.models.user import User
 from app.models.profile import Profile
-from app import db, create_app
-
 from app.steam.api import PLAYER_BANS_URL, PLAYER_SUMMARIES_URL
-
 
 TEST_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -106,6 +105,37 @@ def test_email_verification_token(setup):
     db.session.commit()
     token = u.generate_email_verification_token()
     assert u.validate_email(token) == 'verified'
+
+
+def test_expired_email_change_token(setup):
+    u = User(password='testing1',
+             email='bob@example.com')
+    db.session.add(u)
+    db.session.commit()
+    token = u.generate_email_verification_token()
+    current_time = time.time()
+    with patch('time.time') as p:
+        p.return_value = int(current_time + 24*60*60 + 1)
+        validate_email = u.validate_email(token)
+        assert not validate_email == 'verified'
+        assert validate_email == 'signature_expired'
+
+
+def test_invalid_signature_email_token(setup):
+    u = User(email='bob@example.com')
+    db.session.add(u)
+    db.session.commit()
+    assert u.validate_email('ODJIAWIOEDJASWOD') == 'bad_signature'
+
+
+def test_invalid_user_email_token(setup):
+    u = User(email='bob@example.com')
+    db.session.add(u)
+    db.session.commit()
+    token = u.generate_email_verification_token()
+    db.session.delete(u)
+    db.session.commit()
+    assert User.validate_email(token) == 'unverified'
 
 
 def test_email_verification_without_email(setup):
