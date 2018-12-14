@@ -4,7 +4,6 @@ from flask import current_app, url_for, render_template
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
-from sqlalchemy.exc import IntegrityError
 
 from app.extensions import db, bcrypt
 from app.steam.api import get_summaries_and_bans
@@ -99,43 +98,14 @@ class User(db.Model, UserMixin):
         Returns:
             True if user successfully tracks profile else False
         """
-        profile = Profile.get(steamid)
-
-        if self.steam_oid:
-            if profile.steamid == self.steam_oid.profile.steamid:
-                return False
-
-        profile_data = dict(x_personaname=profile.personaname,
-                            x_community_banned=profile.community_banned,
-                            x_days_since_last_ban=profile.days_since_last_ban,
-                            x_economy_ban=profile.economy_ban,
-                            x_num_game_bans=profile.num_game_bans,
-                            x_num_vac_bans=profile.num_vac_bans,
-                            x_vac_banned=profile.vac_banned)
-        tracking = Tracking(note=note,
-                            profile=profile,
-                            **profile_data)
-        try:
-            self.tracking.append(tracking)
-            db.session.add(self)
-            db.session.commit()
-            return True
-        except IntegrityError:
-            return False
+        return Tracking.track_profile(user=self, steamid=steamid, note=note)
 
     def untrack_profile(self, steamid):
         """
         Deletes tracking profile for steamid if user
         is currently tracking that profile.
         """
-        tracking = self.tracking.join(Profile)\
-                                .filter(Profile.steamid == steamid)\
-                                .first()
-        if tracking:
-            db.session.delete(tracking)
-            db.session.commit()
-            return True
-        return False
+        return Tracking.untrack_profile(user=self, steamid=steamid)
 
     def get_tracking(self, steamids=None):
         """
