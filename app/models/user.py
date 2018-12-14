@@ -181,9 +181,9 @@ class User(db.Model, UserMixin):
                     db.session.commit()
                     return 'verified'
         except (BadSignature, SignatureExpired) as e:
-            if isinstance(e, BadSignature):
+            if type(e) is BadSignature:
                 return 'bad_signature'
-            if isinstance(e, SignatureExpired):
+            if type(e) is SignatureExpired:
                 return 'signature_expired'
         return 'unverified'
 
