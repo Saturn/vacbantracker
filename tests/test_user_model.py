@@ -99,6 +99,18 @@ def test_invalid_password_change_token(setup):
     assert u.validate_forgot_password_token('FaKeToKEn') is None
 
 
+def test_expired_password_change_token(setup):
+    u = User(password='testing1')
+    db.session.add(u)
+    db.session.commit()
+    token = u.generate_forgot_password_token()
+    current_time = time.time()
+    with patch('time.time') as p:
+        p.return_value = int(current_time + 10000)
+        valid_password_change = u.validate_forgot_password_token(token)
+        assert not valid_password_change
+
+
 def test_email_verification_token(setup):
     u = User(email='bob@example.com')
     db.session.add(u)
