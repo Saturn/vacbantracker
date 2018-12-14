@@ -2,7 +2,7 @@ from flask import Flask
 
 from app.config import config
 from app.extensions import db, login_manager, bcrypt, openid
-from app.utils import pretty_date, is_authenticated
+from app.utils.template import pretty_date, is_authenticated
 
 from app.views.main.views import main
 from app.views.auth.views import auth
