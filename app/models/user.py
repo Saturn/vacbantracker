@@ -157,6 +157,27 @@ class User(db.Model, UserMixin):
                                                  'email': email})
 
     @staticmethod
+    def validate_email_token(token):
+        response = {}
+        user_id = None
+        message = 'invalid'
+        email = None
+        try:
+            data = get_serializer().loads(token)
+            user_id = data.get('user_id')
+            email = data.get('email')
+            message = 'valid'
+        except (BadSignature, SignatureExpired) as e:
+            if type(e) is BadSignature:
+                message = 'bad_signature'
+            if type(e) is SignatureExpired:
+                message = 'signature_expired'
+        response['message'] = message
+        response['user_id'] = user_id
+        response['email'] = user_id
+        return response
+
+    @staticmethod
     def validate_email(token=''):
         """
         Args:
@@ -168,24 +189,20 @@ class User(db.Model, UserMixin):
                 'bad_signature' - token had bad signature
                 'signature_expired' - token's signature had expired (>24 hours)
         """
-        try:
-            data = get_serializer().loads(token)
-            user_id = data.get('user_id')
-            user = User.query.get(user_id)
+        validate = User.validate_email_token(token)
+        if validate['message'] == 'valid':
+            user = User.query.get(validate['user_id'])
             if user:
-                email = data.get('email')
+                email = validate.get('email')
                 if email:
                     user.email = email
                     user.verified = True
                     db.session.add(user)
                     db.session.commit()
                     return 'verified'
-        except (BadSignature, SignatureExpired) as e:
-            if type(e) is BadSignature:
-                return 'bad_signature'
-            if type(e) is SignatureExpired:
-                return 'signature_expired'
-        return 'unverified'
+            else:
+                return 'unverified'  # user_id doesn't match any user
+        return validate['message']
 
     def generate_forgot_password_token(self, expiration=3600):
         """
