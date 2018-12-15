@@ -26,7 +26,8 @@ def user_loader(id):
 
 app = create_app('default')
 
-root = os.path.dirname(os.path.realpath(__file__))
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+TEST_PATH = ROOT_PATH + '/../tests/'
 
 
 @app.shell_context_processor
@@ -61,13 +62,12 @@ def initdb():
 def run_tests(coverage):
     import pytest
     import subprocess
-    test_dir = root + '/../tests'
     if coverage:
         subprocess.call(['pytest',
-                         test_dir,
+                         TEST_PATH,
                          '--doctest-modules',
                          '-v',
                          '--cov',
                          'app'])
     else:
-        pytest.main(['-v', test_dir])
+        pytest.main(['-v', TEST_PATH])
