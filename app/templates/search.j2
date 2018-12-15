@@ -4,6 +4,7 @@
 
 {% block content %}
 
+{% import 'macros/track_untrack.j2' as macro %}
 
 <div class="row">
   <div class="col">
@@ -13,8 +14,6 @@
 </div>
 
 <div class="row">
-
-  {% if profiles is not none %}
   <div class="col-lg-8">
     <table id="search-results" class="table table-hover table-responsive-sm table-sm">
       <thead>
@@ -27,29 +26,20 @@
       </thead>
       <tbody>
 
-      {% for profile in profiles %}
-        {% set profile_attrs %}
-        data-steamid="{{ profile.steamid }}"
-        data-personaname="{{ profile.personaname }}"
-        data-note="{{ '' if profile.steamid not in tracking else tracking[profile.steamid].note }}"
-        {% endset %}
-
         <tr>
+
+          {% if profiles is not none %}
+          {% for profile in profiles %}
           <th scope="row">{{ loop.index }}</th>
           <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
           <td>{{ profile.steamid }}</td>
           <td class="search-track-buttons">
             {% if is_authenticated() %}
-              <div {{ profile_attrs }}>
-                {% set t_btn_disp = "d-none" if profile.steamid in tracking else "" %}
-                {% set ut_btn_disp = "d-none" if not t_btn_disp else "" %}
-                <button type="button" class="btn btn-success btn-sm track-button {{ t_btn_disp }}">Track</button>
-                <button type="button" class="btn btn-danger btn-sm untrack-button {{ ut_btn_disp }}">Untrack</button>
-              </div>
+            {{ macro.track_untrack(profile, tracking.get(profile.steamid)) }}
             {% endif %}
           </td>
+          {% endfor %}
         </tr>
-      {% endfor %}
 
 
       </tbody>
