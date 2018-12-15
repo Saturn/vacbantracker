@@ -74,6 +74,20 @@ def mock_steam_multiple():
 
 
 @pytest.fixture
+def steamid():
+    return '76561198066693739'
+
+
+@pytest.fixture
+def steamids():
+    return ['76561197960359452',
+            '76561198034202275',
+            '76561197988627193',
+            '76561197987713664',
+            '76561197982036918']
+
+
+@pytest.fixture
 def mock_time():
     def _func(seconds):
         return patch('time.time', return_value=time.time() + seconds)
