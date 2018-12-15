@@ -1,5 +1,9 @@
+
 import 'bootstrap';
 import $ from 'jquery';
+
+import '../scss/main.scss';
+
 window.jQuery = $;
 window.$ = $;
 

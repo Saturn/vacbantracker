@@ -1,36 +1,20 @@
 const path = require('path');
-const glob = require('glob');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const PurifyCSSPlugin = require('purifycss-webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 
 module.exports = {
   mode: 'development',
-  entry: ['./app/frontend/js/app.js', './app/frontend/scss/main.scss'],
+  entry: './app/frontend/js/app.js',
   output: {
     path: path.resolve(__dirname, 'app/static/'),
     filename: 'js/app.js'
   },
-  // optimization: {
-  //   minimizer: [
-  //     new UglifyJsPlugin({
-  //       cache: true,
-  //       parallel: true,
-  //       sourceMap: true, // set to true if you want JS source maps
-  //     }),
-  //     new OptimizeCSSAssetsPlugin({})
-  //   ]
-  // },
-  devtool: "source-map",
+  devtool: 'source-map',
   module: {
     rules: [
       {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -56,22 +40,5 @@ module.exports = {
         }
       }
     ]
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'css/app.css',
-      chunkFilename: '[id].css'
-    }),
-    new CopyWebpackPlugin([
-      {
-        from: './app/frontend/*',
-        flatten: true
-      },
-    ])
-    // ,
-    // new PurifyCSSPlugin({
-    //   // Give paths to parse for rules. These should be absolute!
-    //   paths: glob.sync(path.join(__dirname, 'app/templates/*.j2')),
-    // })
-  ]
+  }
 };
