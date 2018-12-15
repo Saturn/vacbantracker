@@ -82,3 +82,25 @@ def test_user_already_tracking_profile(setup_app_and_db, mock_steam_single):
         u.track_profile(STEAMID)
         is_tracked = u.track_profile(STEAMID)
     assert not is_tracked
+
+
+def test_user_get_tracking_all(setup_app_and_db, mock_steam_multiple):
+    u = User()
+    db.session.add(u)
+    db.session.commit()
+    with mock_steam_multiple:
+        Profile.get_profiles(STEAMIDS)
+    for steamid in STEAMIDS:
+        u.track_profile(steamid)
+    assert len(u.tracking.all()) == len(u.get_tracking(STEAMIDS))
+    assert len(u.tracking.all()) == len(u.get_tracking())
+
+
+def test_user_get_tracking_single(setup_app_and_db, mock_steam_multiple):
+    u = User()
+    db.session.add(u)
+    db.session.commit()
+    with mock_steam_multiple:
+        Profile.get_profiles(STEAMIDS)
+    u.track_profile(STEAMIDS[0])
+    assert u.tracking.first() == u.get_tracking([STEAMIDS[0]])[0]
