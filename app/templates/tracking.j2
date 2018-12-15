@@ -4,7 +4,7 @@
 
 {% block content %}
 
-
+{% import 'macros/track_untrack.j2' as macro %}
 
 <div class="row">
   <div class="col-lg-8">
@@ -17,7 +17,7 @@
   <div class="col-lg-9">
 
 
-    <table class="table table-sm">
+    <table class="table table-hover table-sm table-responsive-sm">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -25,6 +25,7 @@
           <th scope="col">Steamid</th>
           <th scope="col">VAC Ban</th>
           <th scope="col">Date</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -36,6 +37,9 @@
           <td>{{ t.profile.steamid }}</td>
           <td>{{ t.profile.vac_banned }}</td>
           <td>{{ t.timetracked | pretty_date }}</td>
+          <td>
+          {{ macro.track_untrack(t.profile, True) }}
+          </td>
         </tr>
         {% endfor %}
 
@@ -46,3 +50,6 @@
 </div>
 
 {% endblock content %}
+
+{% include 'snippets/track_modal.j2' %}
+{% include 'snippets/untrack_modal.j2' %}
