@@ -11,6 +11,44 @@ from app import create_app, db
 
 
 TEST_PATH = os.path.dirname(os.path.realpath(__file__))
+DATA_PATH = TEST_PATH + '/data/'
+
+
+def get_ban_data():
+    with open(DATA_PATH + 'ban.json', 'r') as f:
+        return json.loads(f.read())
+
+
+def get_summary_data():
+    with open(DATA_PATH + 'summary.json', 'r') as f:
+        return json.loads(f.read())
+
+
+def get_bans_data():
+    with open(DATA_PATH + 'bans.json', 'r') as f:
+        return json.loads(f.read())
+
+
+def get_summaries_data():
+    with open(DATA_PATH + 'summaries.json', 'r') as f:
+        return json.loads(f.read())
+
+
+def get_requests_mock(multiple=False):
+    if multiple:
+        ban = get_bans_data()
+        summary = get_summaries_data()
+    else:
+        ban = get_ban_data()
+        summary = get_summary_data()
+    mock = requests_mock.mock()
+    mock.register_uri('GET',
+                      PLAYER_BANS_URL,
+                      json=ban)
+    mock.register_uri('GET',
+                      PLAYER_SUMMARIES_URL,
+                      json=summary)
+    return mock
 
 
 @pytest.fixture
@@ -26,22 +64,13 @@ def setup_app_and_db():
 
 
 @pytest.fixture
-def mock_steam():
-    ban = summary = None
-    data_dir = TEST_PATH + '/data/'
-    with open(data_dir + 'ban.json', 'r') as f:
-        ban = json.loads(f.read())
-    with open(data_dir + 'summary.json', 'r') as f:
-        summary = json.loads(f.read())
+def mock_steam_single():
+    return get_requests_mock(multiple=False)
 
-    mock = requests_mock.mock()
-    mock.register_uri('GET',
-                      PLAYER_BANS_URL,
-                      json=ban)
-    mock.register_uri('GET',
-                      PLAYER_SUMMARIES_URL,
-                      json=summary)
-    return mock
+
+@pytest.fixture
+def mock_steam_multiple():
+    return get_requests_mock(multiple=True)
 
 
 @pytest.fixture
