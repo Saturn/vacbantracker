@@ -3,31 +3,31 @@ from app.models.user import User
 from app.models.profile import Profile
 
 
-def test_create_steam_user(setup_app_and_db, mock_steam_single, steamid):
+def test_create_steam_user(setup, mock_steam_single, steamid):
     with mock_steam_single:
         u = User.get_or_create_steam_user(steamid)
         assert u.steam_oid is not None
         assert u.steam_oid.profile.steamid == steamid
 
 
-def test_get_steam_user(setup_app_and_db, mock_steam_single, steamid):
+def test_get_steam_user(setup, mock_steam_single, steamid):
     with mock_steam_single:
         u = User.get_or_create_steam_user(steamid)
         assert User.get_or_create_steam_user(steamid) is u
 
 
-def test_is_steam_user(setup_app_and_db, mock_steam_single, steamid):
+def test_is_steam_user(setup, mock_steam_single, steamid):
     with mock_steam_single:
         u = User.get_or_create_steam_user(steamid)
         assert u.steam_user
 
 
-def test_is_not_steam_user(setup_app_and_db):
+def test_is_not_steam_user(setup):
     u = User(email='bob@example.com')
     assert not u.steam_user
 
 
-def test_user_track_profile(setup_app_and_db, mock_steam_single, steamid):
+def test_user_track_profile(setup, mock_steam_single, steamid):
     u = User()
     db.session.add(u)
     db.session.commit()
@@ -37,7 +37,7 @@ def test_user_track_profile(setup_app_and_db, mock_steam_single, steamid):
     assert is_tracked
 
 
-def test_user_untrack_profile(setup_app_and_db, mock_steam_single, steamid):
+def test_user_untrack_profile(setup, mock_steam_single, steamid):
     u = User()
     db.session.add(u)
     db.session.commit()
@@ -48,7 +48,7 @@ def test_user_untrack_profile(setup_app_and_db, mock_steam_single, steamid):
     assert is_untracked
 
 
-def test_user_untrack_profile_not_tracking(setup_app_and_db, mock_steam_single, steamid):
+def test_user_untrack_profile_not_tracking(setup, mock_steam_single, steamid):
     u = User()
     db.session.add(u)
     db.session.commit()
@@ -58,13 +58,13 @@ def test_user_untrack_profile_not_tracking(setup_app_and_db, mock_steam_single, 
     assert not is_untracked
 
 
-def test_steam_user_tracking_themselves(setup_app_and_db, mock_steam_single, steamid):
+def test_steam_user_tracking_themselves(setup, mock_steam_single, steamid):
     with mock_steam_single:
         u = User.get_or_create_steam_user(steamid)
         assert not u.track_profile(steamid)
 
 
-def test_user_already_tracking_profile(setup_app_and_db, mock_steam_single, steamid):
+def test_user_already_tracking_profile(setup, mock_steam_single, steamid):
     u = User()
     db.session.add(u)
     db.session.commit()
@@ -75,7 +75,7 @@ def test_user_already_tracking_profile(setup_app_and_db, mock_steam_single, stea
     assert not is_tracked
 
 
-def test_user_get_tracking_all(setup_app_and_db, mock_steam_multiple, steamids):
+def test_user_get_tracking_all(setup, mock_steam_multiple, steamids):
     u = User()
     db.session.add(u)
     db.session.commit()
@@ -87,7 +87,7 @@ def test_user_get_tracking_all(setup_app_and_db, mock_steam_multiple, steamids):
     assert len(u.tracking.all()) == len(u.get_tracking())
 
 
-def test_user_get_tracking_single(setup_app_and_db, mock_steam_multiple, steamids):
+def test_user_get_tracking_single(setup, mock_steam_multiple, steamids):
     u = User()
     db.session.add(u)
     db.session.commit()

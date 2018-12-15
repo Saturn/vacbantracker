@@ -52,7 +52,7 @@ def get_requests_mock(multiple=False):
 
 
 @pytest.fixture
-def setup_app_and_db():
+def setup():
     app = create_app('testing')
     app.app_context = app.app_context()
     app.app_context.push()
