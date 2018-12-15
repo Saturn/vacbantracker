@@ -66,7 +66,7 @@ def untrack():
 @login_required
 def tracking():
     def parse_page_query():
-        page = request.args.get('page', 1)
+        page = request.args.get('page', '1')
         page_regex = re.compile('(\d)')
         page_qs = page_regex.match(page)
         if page_qs:
