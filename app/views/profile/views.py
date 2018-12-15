@@ -19,7 +19,7 @@ def profile_view(steamid):
         if tracking:
             tracking = tracking[0]  # user.get_tracking returns list
     if is_steamid64(str(steamid)):
-        profile = Profile.get_profiles([steamid])[0]
+        profile = Profile.get_profile(steamid)
     return render_template('profile.j2',
                            profile=profile,
                            tracking=tracking)
