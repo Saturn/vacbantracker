@@ -1,6 +1,6 @@
 import re
 
-from flask import Blueprint, request, Response, json, render_template
+from flask import Blueprint, request, Response, json, render_template, abort
 from flask_login import login_required, current_user
 from sqlalchemy import desc, asc
 
@@ -65,6 +65,15 @@ def untrack():
 @profile.route('/tracking')
 @login_required
 def tracking():
+    def parse_page_query():
+        page = request.args.get('page', 1)
+        page_regex = re.compile('(\d)')
+        page_qs = page_regex.match(page)
+        if page_qs:
+            page = int(page)
+            return page
+        return abort(404)
+
     def parse_sort_query():
         sort_col_lookup = {'vac': Profile.vac_banned,
                            'date': Tracking.timetracked,
@@ -80,7 +89,7 @@ def tracking():
             sort_col = sort_col_lookup[sort_qs.group(2)]
         return sort_order, sort_col
 
-    page = request.args.get('page', 1)
+    page = parse_page_query()
     sort_order, sort_col = parse_sort_query()
 
     tracking = current_user.tracking.join(Profile)\
