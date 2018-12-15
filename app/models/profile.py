@@ -144,6 +144,10 @@ class Profile(db.Model):
         return data
 
     @staticmethod
+    def get_profile(steamid):
+        return Profile.get_profiles([steamid])[0]
+
+    @staticmethod
     def get(steamid):
         """
         Args:
