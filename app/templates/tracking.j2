@@ -16,6 +16,32 @@
 <div class="row">
   <div class="col-lg-9">
 
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Steamid</th>
+          <th scope="col">VAC Ban</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for t in tracking %}
+        <tr>
+          <th>{{ loop.index }}</th>
+          <td><a href="{{ url_for('profile.profile_view', steamid=t.profile.steamid) }}">{{ t.profile.personaname }}</a></td>
+          <td>{{ t.profile.steamid }}</td>
+          <td>{{ t.profile.vac_banned }}</td>
+          <td>{{ t.timetracked | pretty_date }}</td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
   </div>
 </div>
 
