@@ -14,56 +14,55 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-8">
-    <table id="search-results" class="table table-hover table-responsive-sm table-sm">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">SteamID64</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
+  {% if profiles is not none %}
+    <div class="col-lg-8">
 
+      <table id="search-results" class="table table-hover table-responsive-sm table-sm">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">SteamID64</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
 
-        {% if profiles is not none %}
-        {% for profile in profiles %}
-        <tr>
-          <th scope="row">{{ loop.index }}</th>
-          <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
-          <td>{{ profile.steamid }}</td>
-          <td class="search-track-buttons">
-            {% if is_authenticated() %}
-            {{ macro.track_untrack(profile, tracking.get(profile.steamid)) }}
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
+          {% for profile in profiles %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
+            <td>{{ profile.steamid }}</td>
+            <td class="search-track-buttons">
+              {% if is_authenticated() %}
+              {{ macro.track_untrack(profile, tracking.get(profile.steamid)) }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
 
-
-      </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
   {% else %}
-  <div class="col-lg-8">
-    {% include 'snippets/search_box.j2' %}
-  </div>
-  <div class="col-lg-4">
-    <div class="card border border-info">
-      <div class="card-header"><strong>Example of correct input.</strong></div>
-      <div class="card-body">
-        <p class="font-weight-bold">STEAM_0:0:46862</p>
-        <p class="font-weight-bold">76561197960359452</p>
-        <p class="font-weight-bold">[U:1:93724]</p>
-      </div>
-      <div class="card">
+    <div class="col-lg-8">
+      {% include 'snippets/search_box.j2' %}
+    </div>
+    <div class="col-lg-4">
+      <div class="card border border-info">
+        <div class="card-header"><strong>Example of correct input.</strong></div>
         <div class="card-body">
-          <p>You can search for up to 50 ids at the same time.</p>
+          <p class="font-weight-bold">STEAM_0:0:46862</p>
+          <p class="font-weight-bold">76561197960359452</p>
+          <p class="font-weight-bold">[U:1:93724]</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <p>You can search for up to 50 ids at the same time.</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   {% endif %}
 </div>
 
