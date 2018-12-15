@@ -1,6 +1,3 @@
-import time
-from unittest.mock import patch
-
 import pytest
 
 from app import db
@@ -61,14 +58,12 @@ def test_invalid_password_change_token(setup_app_and_db):
     assert u.validate_forgot_password_token('FaKeToKEn') is None
 
 
-def test_expired_password_change_token(setup_app_and_db):
+def test_expired_password_change_token(setup_app_and_db, mock_time):
     u = User(password='testing1')
     db.session.add(u)
     db.session.commit()
     token = u.generate_forgot_password_token()
-    current_time = time.time()
-    with patch('time.time') as p:
-        p.return_value = int(current_time + 10000)
+    with mock_time(seconds=10000):
         valid_password_change = u.validate_forgot_password_token(token)
         assert not valid_password_change
 
@@ -81,15 +76,13 @@ def test_email_verification_token(setup_app_and_db):
     assert u.validate_email(token) == 'verified'
 
 
-def test_expired_email_change_token(setup_app_and_db):
+def test_expired_email_change_token(setup_app_and_db, mock_time):
     u = User(password='testing1',
              email='bob@example.com')
     db.session.add(u)
     db.session.commit()
     token = u.generate_email_verification_token()
-    current_time = time.time()
-    with patch('time.time') as p:
-        p.return_value = int(current_time + 24*60*60 + 1)
+    with mock_time(seconds=24*60*60 + 1):
         validate_email = u.validate_email(token)
         assert not validate_email == 'verified'
         assert validate_email == 'signature_expired'

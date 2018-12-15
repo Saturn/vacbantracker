@@ -1,5 +1,7 @@
+import time
 import os
 import json
+from unittest.mock import patch
 
 import pytest
 import requests_mock
@@ -24,7 +26,7 @@ def setup_app_and_db():
 
 
 @pytest.fixture
-def steam_mock():
+def mock_steam():
     ban = summary = None
     data_dir = TEST_PATH + '/data/'
     with open(data_dir + 'ban.json', 'r') as f:
@@ -40,3 +42,10 @@ def steam_mock():
                       PLAYER_SUMMARIES_URL,
                       json=summary)
     return mock
+
+
+@pytest.fixture
+def mock_time():
+    def _func(seconds):
+        return patch('time.time', return_value=time.time() + seconds)
+    return _func
