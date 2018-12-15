@@ -26,10 +26,10 @@
       </thead>
       <tbody>
 
-        <tr>
 
-          {% if profiles is not none %}
-          {% for profile in profiles %}
+        {% if profiles is not none %}
+        {% for profile in profiles %}
+        <tr>
           <th scope="row">{{ loop.index }}</th>
           <td><a href="/id/{{ profile.steamid }}">{{ profile.personaname }}</a></td>
           <td>{{ profile.steamid }}</td>
@@ -38,8 +38,8 @@
             {{ macro.track_untrack(profile, tracking.get(profile.steamid)) }}
             {% endif %}
           </td>
-          {% endfor %}
         </tr>
+        {% endfor %}
 
 
       </tbody>
