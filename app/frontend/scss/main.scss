@@ -92,14 +92,10 @@ body {
   @extend .border-info;
 }
 
-.search-track-buttons .btn {
+.search-track-buttons .btn, .tracking-track-buttons .btn {
   padding-top: 0;
   padding-bottom: 0;
-}
-
-.tracking-track-buttons .btn {
-  padding-top: 0;
-  padding-bottom: 0;
+  font-weight: bold;
 }
 
 .steam-profile-table {
