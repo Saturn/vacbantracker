@@ -57,7 +57,9 @@ module.exports = {
       },
     ]),
     new PurifyCSSPlugin({
-      paths: glob.sync(path.join(__dirname, 'app/templates/**/*.j2')),
+      paths: glob.sync('{' + path.join(__dirname, 'app/templates/**/*.j2') + ',' +
+                       path.join(__dirname, 'app/frontend/js/*.js') + '}'
+                      ),
       purifyOptions: {
         whitelist: ['d-none']
       }
