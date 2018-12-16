@@ -4,14 +4,8 @@
 
 {% block content %}
 
-
-{% macro bool_fmt(value) %}
-{% if value %}
-<span class="text-danger">{{ value }}</span>
-{% else %}
-<span class="text-success">{{ value }}</span>
-{% endif %}
-{% endmacro %}
+{% import 'macros/profile_utils.j2' as macros %}
+{% set pretty_bool = macros.pretty_bool %}
 
 {% macro print_timecreated(dt) %}
 {% if dt %}
@@ -21,11 +15,6 @@ Unknown
 {% endif %}
 {% endmacro %}
 
-{% set profile_attrs %}
-data-steamid="{{ profile.steamid }}"
-data-personaname="{{ profile.personaname }}"
-data-note="{{ '' if not tracking else tracking.note }}"
-{% endset %}
 
 <div class="row">
   <div class="col-lg-8">
@@ -84,11 +73,11 @@ data-note="{{ '' if not tracking else tracking.note }}"
               <tbody>
                 <tr>
                   <td>VAC Ban</td>
-                  <td>{{ bool_fmt(profile.vac_banned) }}</td>
+                  <td>{{ pretty_bool(profile.vac_banned) }}</td>
                 </tr>
                 <tr>
                   <td>Community Ban</td>
-                  <td>{{ bool_fmt(profile.community_banned) }}</td>
+                  <td>{{ pretty_bool(profile.community_banned) }}</td>
                 </tr>
                 <tr>
                   <td>Economy Ban</td>
@@ -115,7 +104,7 @@ data-note="{{ '' if not tracking else tracking.note }}"
         </div>
 
         {% if tracking %}
-          <button {{ profile_attrs }} class="btn btn-danger untrack-button-profile">Untrack Profile</button>
+          <button {{ macros.profile_attrs(profile, tracking) }} class="btn btn-danger untrack-button-profile">Untrack Profile</button>
         {% endif %}
       </div>
     </div>

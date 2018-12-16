@@ -1,15 +1,25 @@
-{% macro track_untrack(profile, tracking=None) %}
-  {% set profile_attrs %}
+{% macro profile_attrs(profile, tracking=None) %}
     data-steamid="{{ profile.steamid }}"
     data-personaname="{{ profile.personaname }}"
     data-note="{{ '' if not tracking else tracking.note }}"
-  {% endset %}
+{% endmacro %}
+
+
+{% macro track_untrack(profile, tracking=None) %}
 
   {% set track_dsp = 'd-none' if tracking else '' %}
   {% set untrack_dsp = 'd-none' if not tracking else '' %}
 
-  <div {{ profile_attrs }}>
+  <div {{ profile_attrs(profile, tracking) }}>
     <button type="button" class="btn btn-success btn-sm track-button {{ track_dsp }}">Track</button>
     <button type="button" class="btn btn-danger btn-sm untrack-button {{ untrack_dsp }}">Untrack</button>
   </div>
+{% endmacro %}
+
+{% macro pretty_bool(value) %}
+  {% if value %}
+    <span class="text-danger">{{ value }}</span>
+  {% else %}
+    <span class="text-success">{{ value }}</span>
+  {% endif %}
 {% endmacro %}
