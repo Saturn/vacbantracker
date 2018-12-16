@@ -30,7 +30,6 @@ Unknown
       <div class="card-body">
         <h3 class="card-title">{{ profile.personaname }}</h3>
         <p><a href="{{ profile.steamurl }}" target="_blank">{{ profile.steamurl }}</a></p>
-        <p></p>
 
         <div class="row">
 
@@ -57,12 +56,6 @@ Unknown
                   <td>Created</td>
                   <td>{{ print_timecreated(profile.timecreated) }}</td>
                 </tr>
-                {% if profile.vanityurl %}
-                <tr>
-                  <td>Vanity URL</td>
-                  <td>{{ profile.vanityurl }}</td>
-                </tr>
-                {% endif %}
               </tbody>
             </table>
           </div>
