@@ -1,0 +1,31 @@
+{% set output_text %}
+<p class="card-text">
+You started tracking <strong>{{ tracking.profile.personaname }}</strong> on <strong>{{ tracking.timetracked | pretty_date }}</strong>.
+{% if tracking.x_personaname != tracking.profile.personaname %}
+They were known as <strong>tracking.x_personaname</strong>.
+{% endif %}
+</p>
+<p class="card-text">
+{% if tracking.x_vac_banned != tracking.profile.vac_banned %}
+They recieved a VAC ban after you started tracking. // todo
+{% else %}
+Their ban status has not changed.
+{% endif %}
+</p>
+{% endset %}
+
+
+<div class="row">
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header">
+        Tracking Information
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {{ output_text }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
