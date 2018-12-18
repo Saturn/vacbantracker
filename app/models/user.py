@@ -174,7 +174,7 @@ class User(db.Model, UserMixin):
                 message = 'signature_expired'
         response['message'] = message
         response['user_id'] = user_id
-        response['email'] = user_id
+        response['email'] = email
         return response
 
     @staticmethod
