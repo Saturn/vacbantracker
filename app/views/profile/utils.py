@@ -1,10 +1,5 @@
 import re
-
 from flask import request, abort
-from sqlalchemy import asc, desc
-
-from app.models.profile import Profile
-from app.models.tracking import Tracking
 
 
 def parse_page_query():
@@ -18,16 +13,30 @@ def parse_page_query():
 
 
 def parse_sort_query():
-    sort_col_lookup = {'vac': Profile.vac_banned,
-                       'date': Tracking.timetracked,
-                       'name': Profile.personaname}
-    sort_regex = re.compile('([\+\-])(vac|date|name)')
-    sort_col = sort_col_lookup['date']
-    sort_order = asc
     sort = request.args.get('sort', '')
+    direction = request.args.get('direction', 'desc')
+    if not direction.lower() in ('asc', 'desc'):
+        direction = 'desc'
+    if sort.lower() in ('name', 'date', 'vac'):
+        return sort, direction
 
-    sort_qs = sort_regex.match(sort)
-    if sort_qs:
-        sort_order = asc if sort_qs.group(1) == '+' else desc
-        sort_col = sort_col_lookup[sort_qs.group(2)]
-    return sort_order, sort_col
+
+def get_tracking_sort_by_urls(direction, sort_by):
+    """
+    Args:
+        direction - string, either 'asc' or 'desc'
+        sort_by - column name to sort by
+    Returns:
+        dict with keys for name and value is the url
+    """
+    urls = {}
+    base = '/tracking?sort={}&direction={}'
+    urls['date'] = base.format('date', 'desc')
+    urls['name'] = base.format('name', 'desc')
+    urls['vac'] = base.format('vac', 'desc')
+
+    # flip the direction (for currently selected sorting column)
+    new_direction = 'asc' if direction == 'desc' else 'desc'
+    urls[sort_by] = base.format(sort_by, new_direction)
+
+    return urls

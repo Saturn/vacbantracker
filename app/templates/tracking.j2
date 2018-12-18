@@ -6,6 +6,7 @@
 
 {% import 'macros/profile_utils.j2' as macro %}
 
+
 <div class="row">
   <div class="col-lg-8">
     <h3>Tracking</h3>
@@ -15,16 +16,18 @@
 
 <div class="row">
   <div class="col-lg-9">
-
+    <div class="tracking-filters">
+      {{ sort_by, sort_direction }}
+    </div>
 
     <table class="table table-hover table-sm table-responsive-sm">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Name</th>
+          <th scope="col"><a href="{{ sort_urls['name'] }}">Name</a></th>
           <th scope="col">Steamid</th>
-          <th scope="col">VAC Ban</th>
-          <th scope="col">Date</th>
+          <th scope="col"><a href="{{ sort_urls['vac'] }}">VAC Ban</a></th>
+          <th scope="col"><a href="{{ sort_urls['date'] }}">Date</a></th>
           <th scope="col"></th>
         </tr>
       </thead>

@@ -1,9 +1,13 @@
 from flask import Blueprint, request, Response, json, render_template
 from flask_login import login_required, current_user
+from sqlalchemy import asc, desc
 
 from app.steam.id import is_steamid64
 from app.models.profile import Profile
-from app.views.profile.utils import parse_page_query, parse_sort_query
+from app.models.tracking import Tracking
+
+from app.views.profile.utils import (parse_page_query, parse_sort_query,
+                                     get_tracking_sort_by_urls)
 
 
 profile = Blueprint('profile', __name__)
@@ -62,14 +66,21 @@ def untrack():
 @profile.route('/tracking')
 @login_required
 def tracking():
-
     page = parse_page_query()
-    sort_order, sort_col = parse_sort_query()
+    _sort_by, _sort_direction = parse_sort_query()
+
+    sort_col_lookup = {'vac': Profile.vac_banned,
+                       'date': Tracking.timetracked,
+                       'name': Profile.personaname}
+    sort_by = sort_col_lookup[_sort_by]
+    sort_direction = desc if _sort_direction == 'desc' else asc
 
     tracking = current_user.tracking.join(Profile)\
-                                    .order_by(sort_order(sort_col))\
+                                    .order_by(sort_direction(sort_by))\
                                     .paginate(page, 25)\
                                     .items
-
+    sort_urls = get_tracking_sort_by_urls(_sort_direction, _sort_by)
     return render_template('tracking.j2',
-                           tracking=tracking)
+                           tracking=tracking,
+                           base_url='/tracking',
+                           sort_urls=sort_urls)
