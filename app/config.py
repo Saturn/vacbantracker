@@ -9,13 +9,9 @@ class BaseConfig:
     SECRET_KEY = os.environ.get('FLASK_SECRET_KEY')
     WTF_CSRF_SECRET_KEY = os.environ.get('WTF_CSRF_SECRET_KEY')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('FLASK_MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('FLASK_MAIL_PASSWORD')
-    MAIL_SUBJECT_PREFIX = ''
-    MAIL_SENDER = ''
+    MAILGUN_API_URL = os.environ.get('MAILGUN_API_URL')
+    MAIL_GUN_API_KEY = os.environ.get('MAIL_GUN_API_KEY')
+    EMAIL_FROM = os.environ.get('EMAIL_FROM')
     STEAM_API_KEY = os.environ.get('STEAM_API_KEY')
     SITE_TITLE = "VACBanTracker"
     SECRET_KEY = 'This is the flask secret key'

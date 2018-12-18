@@ -10,6 +10,7 @@ from app.steam.api import get_summaries_and_bans
 from app.models.steam_oid import SteamOID
 from app.models.profile import Profile
 from app.models.tracking import Tracking
+from app.email import send_email
 
 
 def get_serializer(expiration=None):
@@ -134,6 +135,7 @@ class User(db.Model, UserMixin):
         email_msg = render_template(template,
                                     url=url,
                                     email=email)
+        send_email(email, 'Test', email_msg)
         print(email_msg)
 
     def change_email(self, new_email):
