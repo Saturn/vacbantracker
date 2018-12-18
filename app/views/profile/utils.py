@@ -41,3 +41,15 @@ def get_tracking_sort_by_urls(direction, sort_by):
     urls[sort_by] = base.format(sort_by, new_direction)
 
     return urls
+
+
+def url_for_other_page(page=1):
+    """
+    """
+    qs = request.query_string.decode('utf-8')
+    match = re.search('page=(\d+)', qs)
+    if match:
+        qs = qs.replace(match.group(0), 'page={}'.format(page))
+    else:
+        qs = qs + '&page={}'.format(page)
+    return '/tracking?' + qs

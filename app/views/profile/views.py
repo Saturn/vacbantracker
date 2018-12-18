@@ -7,7 +7,8 @@ from app.models.profile import Profile
 from app.models.tracking import Tracking
 
 from app.views.profile.utils import (parse_page_query, parse_sort_query,
-                                     get_tracking_sort_by_urls)
+                                     get_tracking_sort_by_urls,
+                                     url_for_other_page)
 
 
 profile = Blueprint('profile', __name__)
@@ -77,10 +78,12 @@ def tracking():
 
     tracking = current_user.tracking.join(Profile)\
                                     .order_by(sort_direction(sort_by))\
-                                    .paginate(page, 25)\
-                                    .items
+                                    .paginate(page, 25)
+
     sort_urls = get_tracking_sort_by_urls(_sort_direction, _sort_by)
+
     return render_template('tracking.j2',
                            tracking=tracking,
                            base_url='/tracking',
-                           sort_urls=sort_urls)
+                           sort_urls=sort_urls,
+                           url_for_other_page=url_for_other_page)
