@@ -13,12 +13,13 @@ def parse_page_query():
 
 
 def parse_sort_query():
-    sort = request.args.get('sort', '')
+    sort = request.args.get('sort', 'date')
     direction = request.args.get('direction', 'desc')
     if not direction.lower() in ('asc', 'desc'):
         direction = 'desc'
-    if sort.lower() in ('name', 'date', 'vac'):
-        return sort, direction
+    if not sort.lower() in ('name', 'date', 'vac'):
+        sort = 'date'
+    return sort, direction
 
 
 def get_tracking_sort_by_urls(direction, sort_by):
