@@ -4,7 +4,8 @@
 
 {% block content %}
 
-{% import 'macros/profile_utils.j2' as macro %}
+{% import 'macros/profile_utils.j2' as macros %}
+{% set pretty_bool = macros.pretty_bool %}
 
 
 <div class="row">
@@ -35,10 +36,10 @@
           <th>{{ loop.index }}</th>
           <td><a href="{{ url_for('profile.profile_view', steamid=t.profile.steamid) }}">{{ t.profile.personaname }}</a></td>
           <td>{{ t.profile.steamid }}</td>
-          <td>{{ t.profile.vac_banned }}</td>
+          <td>{{ pretty_bool(t.profile.vac_banned) }}</td>
           <td>{{ t.timetracked | pretty_date }}</td>
           <td class="tracking-track-buttons">
-          {{ macro.track_untrack(t.profile, True) }}
+          {{ macros.track_untrack(t.profile, True) }}
           </td>
         </tr>
         {% endfor %}
