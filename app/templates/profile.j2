@@ -27,9 +27,19 @@ Unknown
   <div class="col-lg-7 pb-4">
 
     <div class="card">
+
       <div class="card-body">
-        <h3 class="card-title">{{ profile.personaname }}</h3>
-        <p><a href="{{ profile.steamurl }}" target="_blank">{{ profile.steamurl }}</a></p>
+
+        <div class="row">
+          <div class="col-lg-2">
+            <img src="{{ profile.avatar }}" width="64" height="64" />
+          </div>
+          <div class="col-lg-10">
+            <h3 class="card-title">{{ profile.personaname }}</h3>
+            <p><a href="{{ profile.steamurl }}" target="_blank">{{ profile.steamurl }}</a></p>
+          </div>
+
+        </div>
 
         <div class="row">
 
